@@ -19,7 +19,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <a className="navbar-brand mt-lg-0 d-flex align-items-center gap-2" href="#" style={{ color: "white", fontWeight: "bold" }}>
+            <a className="navbar-brand mt-lg-0 d-flex align-items-center gap-2" href="/ppdbonline" style={{ color: "white", fontWeight: "bold" }}>
               <img
                 src={logo}
                 height="25"
@@ -51,7 +51,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
       </nav>
-      <main>{children}</main>
+      <main style={{overflowX: "hidden"}}>{children}</main>
       <footer className="footer mt-auto py-2" style={{ backgroundColor: "#004040" }}>
         <div className="container text-center">
           <span className="text-center text-white">&copy; 2023 SMP ISLAM WALISONGO.</span>

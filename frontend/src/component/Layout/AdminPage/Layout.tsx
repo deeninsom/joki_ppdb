@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import logo from "../../../assets/SMP-removebg-preview.jpg"
 import { useNavigate } from "react-router-dom"
 
@@ -9,6 +9,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const handlePage = (route: string) => {
     navigate(route)
   }
+  const [dropdown, setDropdown] = useState(false)
+
 
   return (
     <>
@@ -59,10 +61,34 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 </ul>
                 <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>LAINYA</span>
                 <ul style={{ listStyle: "none", marginLeft: "-20px" }}>
-                  <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/panel_admin/kelola")} style={{ cursor: "pointer" }}>
+                  <li className="my-3 d-flex align-items-center gap-3">
                     <i style={{ marginLeft: "4px" }} className="fa fa-solid fa-gear"></i>
-                    <span>KELOLA</span>
+                    <div className="d-flex align-items-center justify-content-between w-100">
+                      <span>KELOLA</span>
+                      {
+                        dropdown ? (
+                          <i className="fa fa-solid fa-chevron-down" style={{ cursor: "pointer" }} onClick={() => setDropdown(false)}></i>
+                        )
+                          : (
+                            <i className="fa fa-solid fa-chevron-left" style={{ cursor: "pointer" }} onClick={() => setDropdown(true)}></i>
+                          )
+                      }
+                    </div>
                   </li>
+                  {
+                    dropdown && (
+                      <ul style={{ listStyle: "none", marginLeft: "10px" }}>
+                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/panel_admin/kelola")} style={{ cursor: "pointer", fontSize: "13px" }}>
+                          <i className="fa fa-solid fa-bell"></i>
+                          <span>PENGUMUMAN</span>
+                        </li>
+                        {/* <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/")} style={{ cursor: "pointer", fontSize: "13px" }}>
+                        <i className="fa fa-solid fa-user"></i>
+                          <span>PROFILE</span>
+                        </li> */}
+                      </ul>
+                    )
+                  }
                   <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/")} style={{ cursor: "pointer" }}>
                     <i style={{ marginLeft: "4px" }} className="fa fa-solid fa-right-from-bracket"></i>
                     <span>KELUAR</span>
