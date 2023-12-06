@@ -16,7 +16,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <>
       <nav className="navbar navbar-expand-lg navbar-light sticky-top" style={{ backgroundColor: "#004040" }}>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <a className="navbar-brand mt-lg-0 d-flex align-items-center" href="/panel_siswa/home" style={{ color: "white", fontWeight: "bold", marginLeft: "3%" }}>
+          <a className="navbar-brand mt-lg-0 d-flex align-items-center" href="/panel_admin/home" style={{ color: "white", fontWeight: "bold", marginLeft: "3%" }}>
             <img
               src={logo}
               height="25"

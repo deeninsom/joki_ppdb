@@ -1,3 +1,4 @@
+import DatePickers from "../../utils/DatePickers"
 import Layout from "../Layout/AdminPage/Layout"
 
 const Kelulusan = () => {
@@ -8,13 +9,12 @@ const Kelulusan = () => {
           <div className="text-header p-3">
             <span style={{ fontWeight: "bold" }}>VERIFIKASI KELULUSAN</span>
             <hr style={{ marginTop: "3px" }} />
-            {/* <i className="fa fa-solid fa-calendar-days me" style={{ color: "GrayText" }}></i> */}
-            <input type="date" placeholder="asdasd"></input>
+            <DatePickers/>
           </div>
           <div className="searching" >
             <hr style={{ marginTop: "-1px" }} />
-            <label htmlFor="" className="me-2 ms-3">Filter :</label>
-            <input type="text" style={{ padding: "3px", fontSize: "14px", }} placeholder="Search.." name="search" />
+            <label htmlFor="" className="me-2 ms-3" style={{fontSize: "12px"}}>Filter :</label>
+            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Type to filter" name="search" />
           </div>
           <div className="card-body">
             <table className="table table-bordered">
@@ -29,7 +29,7 @@ const Kelulusan = () => {
                   <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
+              {/* <tbody>
                 <tr>
                   <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>1</td>
                   <td style={{ fontWeight: "normal", fontSize: "11px" }}>1</td>
@@ -50,7 +50,7 @@ const Kelulusan = () => {
                     </button>
                   </td>
                 </tr>
-              </tbody>
+              </tbody> */}
             </table>
           </div>
           <div className="d-flex justify-content-end me-4">

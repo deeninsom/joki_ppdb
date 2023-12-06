@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Layout from "../Layout/AdminPage/Layout"
+import DatePickers from "../../utils/DatePickers";
+
 
 const Verifikasi = () => {
+
   return (
     <Layout>
       <section>
@@ -8,20 +12,19 @@ const Verifikasi = () => {
           <div className="text-header p-3">
             <span style={{ fontWeight: "bold" }}>VERIFIKASI DATA</span>
             <hr style={{ marginTop: "3px" }} />
-            {/* <i className="fa fa-solid fa-calendar-days me" style={{ color: "GrayText" }}></i> */}
-            <input type="date" placeholder="asdasd"></input>
+            <DatePickers/>
           </div>
           <div className="searching" >
             <hr style={{ marginTop: "-1px" }} />
-            <label htmlFor="" className="me-2 ms-3">Filter :</label>
-            <input type="text" style={{ padding: "3px", fontSize: "14px", }} placeholder="Search.." name="search" />
+            <label htmlFor="" className="me-2 ms-3" style={{fontSize: "12px"}}>Filter :</label>
+            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Type to filter" name="search" />
           </div>
           <div className="card-body">
             <table className="table table-bordered">
               <thead>
                 <tr>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "4%" }}>No</th>
-                  <th style={{ fontWeight: "bold", fontSize: "11px", width: "10%"  }}>No. Pendaftaran</th>
+                  <th style={{ fontWeight: "bold", fontSize: "11px", width: "10%" }}>No. Pendaftaran</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "12%" }}>NISN</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "15%" }}>NIK</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "15%" }}>Nama</th>
@@ -29,7 +32,7 @@ const Verifikasi = () => {
                   <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
+              {/* <tbody>
                 <tr>
                   <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>1</td>
                   <td style={{ fontWeight: "normal", fontSize: "11px" }}>1</td>
@@ -37,7 +40,7 @@ const Verifikasi = () => {
                   <td style={{ fontWeight: "normal", fontSize: "11px" }}>1</td>
                   <td style={{ fontWeight: "normal", fontSize: "11px" }}>1</td>
                   <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>
-                    <span className="d-flex justify-content-center" style={{backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px"}}>BELUM TERVERIFIKASI</span>
+                    <span className="d-flex justify-content-center" style={{ backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px" }}>BELUM TERVERIFIKASI</span>
                   </td>
                   <td style={{ fontWeight: "normal" }} className="d-flex gap-3 justify-content-center">
                     <button type="button" style={{ fontSize: "10px", fontWeight: "bold" }} className="btn btn-danger">
@@ -51,7 +54,7 @@ const Verifikasi = () => {
                     </button>
                   </td>
                 </tr>
-              </tbody>
+              </tbody> */}
             </table>
           </div>
           <div className="d-flex justify-content-end me-4">

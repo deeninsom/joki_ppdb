@@ -5,8 +5,8 @@ import CardPendaftaran from "../component/LandingPage/_ui/CardPendaftaran"
 const LandingPageRoute = () => {
   return (
     <Routes>
-      <Route path="/ppdbonline" element={<LandingPage />} />
-      <Route path="/form/pendaftaran" element={<CardPendaftaran />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/form-pendaftaran" element={<CardPendaftaran />} />
     </Routes>
   )
 }

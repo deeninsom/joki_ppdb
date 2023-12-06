@@ -19,12 +19,12 @@ const FormDataSekolah = () => {
             </select>
           </div>
         </div>
-        <div className="mb-3 row">
+        {/* <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">N.P.S.N <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
             <input type="text" className="form-control" required />
           </div>
-        </div>
+        </div> */}
       </form>
     </section >
   )

@@ -34,12 +34,6 @@ const FormDataAlamat = () => {
           </div>
         </div>
         <div className="mb-3 row">
-          <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Kode Pos <span style={{ color: "red" }}>*</span></label>
-          <div className="col-sm-9 ">
-            <input type="text" className="form-control" required />
-          </div>
-        </div>
-        <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Jarak ke sekolah <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
             <select className="form-select" aria-label="Default select example">

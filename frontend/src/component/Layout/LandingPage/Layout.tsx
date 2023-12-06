@@ -19,7 +19,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <a className="navbar-brand mt-lg-0 d-flex align-items-center gap-2" href="/ppdbonline" style={{ color: "white", fontWeight: "bold" }}>
+            <a className="navbar-brand mt-lg-0 d-flex align-items-center gap-2" href="/" style={{ color: "white", fontWeight: "bold" }}>
               <img
                 src={logo}
                 height="25"

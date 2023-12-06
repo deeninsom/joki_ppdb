@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-// import AdminRoute from "./pages/AdminPanel/Route"
 import LandingPageRoute from "./routing/LandingPageRoute"
 import SiswaRoute from "./routing/SiswaRoute"
 import AdminRoute from "./routing/AdminRoute"
+import Auth from "./pages/Auth"
 
 const App = () => {
   return (
@@ -12,6 +12,7 @@ const App = () => {
           <Route path="/*" element={<LandingPageRoute />} />
           <Route path="/panel_siswa*" element={<SiswaRoute />} />
           <Route path="/panel_admin*" element={<AdminRoute />} />
+          <Route path="/login*" element={<Auth/>} />
         </Routes>
       </BrowserRouter>
     </>

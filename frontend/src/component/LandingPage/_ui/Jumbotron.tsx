@@ -6,8 +6,8 @@ import backgroundImage from "../../../assets/image_bg.jpg"
 const Jumbotron = () => {
   const navigate = useNavigate()
 
-  const handlePendaftaran = () => {
-    navigate("/form/pendaftaran")
+  const handlePendaftaran = (route: string) => {
+    navigate(route)
   }
 
   return (
@@ -22,8 +22,8 @@ const Jumbotron = () => {
             <span>SMP ISLAM WALISONGO</span>
           </div>
           <div className="button-flex d-flex gap-2 justify-content-center" style={{marginTop: "20px"}}>
-            <button onClick={handlePendaftaran} className="btn btn-primary"><i className="fa fa-solid fa-clipboard-list me-2"></i>DAFTAR</button>
-            <button className="btn btn-primary"><i className="fa fa-solid fa-arrow-right-to-bracket me-2"></i>MASUK</button>
+            <button onClick={()=> handlePendaftaran('/form-pendaftaran')} className="btn btn-primary"><i className="fa fa-solid fa-clipboard-list me-2"></i>DAFTAR</button>
+            <button onClick={()=> handlePendaftaran('/login')} className="btn btn-primary"><i className="fa fa-solid fa-arrow-right-to-bracket me-2"></i>MASUK</button>
           </div>
         </div>
       </div>
