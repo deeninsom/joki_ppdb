@@ -17,7 +17,7 @@ export class UserService {
         return findUser
     }
 
-    async getId(id: string): Promise<UserDTO> {
+    async getId(id: string): Promise<any> {
         const findUser = await this.userRepository.findOne({
             where: { id }
         });
@@ -33,21 +33,13 @@ export class UserService {
     }
 
     async update(id: string, payload: any): Promise<UserDTO> {
-        const findUser = await this.userRepository.findOne({
-            where: { id }
-        });
-        if (!findUser) throw new HttpException(`User dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
-
+        const findUser = await this.getId(id)
         await this.userRepository.save(payload)
         return await this.userRepository.findOne({ where: { id: findUser.id } })
     }
 
     async delete(id: string): Promise<void> {
-        const findUser = await this.userRepository.findOne({
-            where: { id: id }
-        });
-        if (!findUser) throw new HttpException(`User dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
-
-        await this.userRepository.delete(findUser)
+        const findUser = await this.getId(id)
+        await this.userRepository.delete(findUser.id)
     }
 }

@@ -8,7 +8,7 @@ const Login = () => {
     username: "",
     password: ""
   })
-  const { login, error }: any = useLogin()
+  const { login, error, isLoading }: any = useLogin()
 
   const handleLogin = async () => {
     await login(payload.username, payload.password)
@@ -55,6 +55,15 @@ const Login = () => {
           </div>
         </form>
         <button type="submit" className="btn btn-primary" onClick={handleLogin}>Masuk</button>
+        {
+          isLoading && (
+            <div className="d-flex justify-content-center mt-4">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )
+        }
         <p style={{ color: 'red', fontSize: "10px", paddingTop: "20px", textAlign: "center" }}>{error}</p>
       </div>
     </section>

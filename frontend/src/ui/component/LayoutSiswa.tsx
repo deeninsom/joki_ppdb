@@ -2,6 +2,7 @@
 import { ReactNode } from "react"
 import logo from "../../assets/SMP-removebg-preview.jpg"
 import { useNavigate } from "react-router-dom"
+import { useLogout } from "../../service/hooks/useLogout"
 
 export const LayoutSiswa = ({ children }: { children: ReactNode })  => {
   const navigate = useNavigate()
@@ -10,11 +11,16 @@ export const LayoutSiswa = ({ children }: { children: ReactNode })  => {
     navigate(route)
   }
 
+  const {logout} = useLogout()
+  const handleLogout = () => {
+    logout()
+  }
+
   return (
     <>
     <nav className="navbar navbar-expand-lg navbar-light sticky-top" style={{ backgroundColor: "#004040" }}>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <a className="navbar-brand mt-lg-0 d-flex align-items-center" href="/panel_siswa/home" style={{ color: "white", fontWeight: "bold", marginLeft: "3%" }}>
+        <a className="navbar-brand mt-lg-0 d-flex align-items-center" href="/siswa-panel" style={{ color: "white", fontWeight: "bold", marginLeft: "3%" }}>
           <img
             src={logo}
             height="25"
@@ -48,13 +54,17 @@ export const LayoutSiswa = ({ children }: { children: ReactNode })  => {
                   <i className="fa fa-solid fa-house"></i>
                   <span>HOME</span>
                 </li>
+                <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/siswa-panel/biodata")} style={{ cursor: "pointer" }}>
+                  <i className="ms-1 fa fa-solid fa-file"></i>
+                  <span style={{ marginLeft: "2px" }}>BIODATA</span>
+                </li>
                 <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/siswa-panel/pengumuman")} style={{ cursor: "pointer" }}>
                   <i className="fa fa-solid fa-volume-high"></i>
                   <span style={{ marginLeft: "-2px" }}>PENGUMUMAN</span>
                 </li>
-                <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/siswa-panel/biodata")} style={{ cursor: "pointer" }}>
-                  <i className="ms-1 fa fa-solid fa-file"></i>
-                  <span style={{ marginLeft: "2px" }}>BIODATA</span>
+                <li className="my-3 d-flex align-items-center gap-3" style={{ cursor: "pointer" }}>
+                  <i className="fa fa-solid fa-clipboard-list ms-1"></i>
+                  <span style={{ marginLeft: "2px" }}>Ujian</span>
                 </li>
                 <li className="my-3 d-flex align-items-center gap-3" style={{ cursor: "pointer" }}>
                   <i className="fa fa-solid fa-print" style={{ marginLeft: "2px" }} ></i>
@@ -63,7 +73,7 @@ export const LayoutSiswa = ({ children }: { children: ReactNode })  => {
               </ul>
               <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>LAINYA</span>
               <ul style={{ listStyle: "none", marginLeft: "-20px" }}>
-                <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/login")} style={{ cursor: "pointer" }}>
+                <li className="my-3 d-flex align-items-center gap-3" onClick={handleLogout} style={{ cursor: "pointer" }}>
                   <i style={{ marginLeft: "4px" }} className="fa fa-solid fa-right-from-bracket"></i>
                   <span>KELUAR</span>
                 </li>

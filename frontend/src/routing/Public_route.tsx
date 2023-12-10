@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom"
 import LandingPage from "../ui/pages/LandingPage"
-import FormPendaftaran from "../ui/component/FormPendaftaran"
+import PendaftaranSiswa from "../ui/pages/PendaftaranSiswa"
 
 const Public_route = () => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/form-pendaftaran" element={<FormPendaftaran />} />
+      <Route path="/form-pendaftaran" element={<PendaftaranSiswa />} />
     </Routes>
   )
 }

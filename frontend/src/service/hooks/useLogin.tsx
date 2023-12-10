@@ -17,17 +17,21 @@ export const useLogin = () => {
     axiosInstance.post('/auth/login', {
       username: username,
       password: password
-  })
+    })
       .then((response) => {
         localStorage.setItem('user', JSON.stringify(response))
         dispatch({ type: 'LOGIN', payload: response })
         setIsloading(false)
-        navigate('/admin-panel')
+        if (response.data.data.role !== 'admin') {
+          navigate('/siswa-panel')
+        } else {
+          navigate('/admin-panel')
+        }
       })
       .catch((error) => {
         setIsloading(false)
-          setError(error.response.data.message);
+        setError(error.response.data.message);
       });
-  } 
+  }
   return { login, error, isLoading }
 }

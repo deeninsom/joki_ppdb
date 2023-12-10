@@ -55,6 +55,18 @@ const FormDataSiswa = () => {
             <input type="text" className="form-control" />
           </div>
         </div>
+        <div className="mb-3 row">
+          <label style={{ textAlign: "end", }} htmlFor="formFileSm" className="col-sm-3 col-form-label">Upload Raport</label>
+          <div className="col-sm-9 ">
+            <input className="form-control form-control-sm" id="formFileSm" type="file" />
+          </div>
+        </div>
+        <div className="mb-3 row">
+          <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Nilai Rata - rata</label>
+          <div className="col-sm-9 ">
+            <input type="number" className="form-control" />
+          </div>
+        </div>
       </form>
     </section >
   )

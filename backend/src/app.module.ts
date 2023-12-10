@@ -7,6 +7,8 @@ import { UploadController } from './modules/upload_data/upload.controller';
 import Users from './modules/user/user.entity';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import Siswa from './modules/siswa/siswa.entity';
+import { SiswaModule } from './modules/siswa/siswa.module';
 
 @Module({
   imports: [
@@ -33,10 +35,12 @@ import { AuthModule } from './modules/auth/auth.module';
       synchronize: true,
       entities: [
         Users,
+        Siswa
       ],
     }),
     AuthModule,
     UserModule,
+    SiswaModule
   ],
   controllers: [UploadController]
 })

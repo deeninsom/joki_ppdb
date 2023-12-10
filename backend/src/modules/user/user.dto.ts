@@ -1,3 +1,4 @@
+import { IsOptional } from "@nestjs/class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UserDTO {
@@ -6,5 +7,9 @@ export class UserDTO {
 
     @ApiProperty()
     password: string;
+
+    @ApiProperty()
+    @IsOptional()
+    role: string;
 }
 

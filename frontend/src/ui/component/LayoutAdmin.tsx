@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react"
 import logo from "../../assets/SMP-removebg-preview.jpg"
 import { useNavigate } from "react-router-dom"
+import { useLogout } from "../../service/hooks/useLogout"
 
 
 const LayoutAdmin = ({ children }: { children: ReactNode }) => {
@@ -11,12 +12,15 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
   }
   const [dropdown, setDropdown] = useState(false)
 
-
+  const {logout} = useLogout()
+  const handleLogout = () => {
+    logout()
+  }
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light sticky-top" style={{ backgroundColor: "#004040" }}>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <a className="navbar-brand mt-lg-0 d-flex align-items-center" href="/panel_admin/home" style={{ color: "white", fontWeight: "bold", marginLeft: "3%" }}>
+          <a className="navbar-brand mt-lg-0 d-flex align-items-center" href="/admin-panel" style={{ color: "white", fontWeight: "bold", marginLeft: "3%" }}>
             <img
               src={logo}
               height="25"
@@ -82,6 +86,10 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
                           <i className="fa fa-solid fa-bell"></i>
                           <span>PENGUMUMAN</span>
                         </li>
+                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola")} style={{ cursor: "pointer", fontSize: "13px" }}>
+                          <i className="fa fa-solid fa-clipboard-list" style={{marginLeft: "1px"}}></i>
+                          <span>Ujian</span>
+                        </li>
                         {/* <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/")} style={{ cursor: "pointer", fontSize: "13px" }}>
                       <i className="fa fa-solid fa-user"></i>
                         <span>PROFILE</span>
@@ -89,7 +97,7 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
                       </ul>
                     )
                   }
-                  <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/login")} style={{ cursor: "pointer" }}>
+                  <li className="my-3 d-flex align-items-center gap-3" onClick={handleLogout} style={{ cursor: "pointer" }}>
                     <i style={{ marginLeft: "4px" }} className="fa fa-solid fa-right-from-bracket"></i>
                     <span>KELUAR</span>
                   </li>

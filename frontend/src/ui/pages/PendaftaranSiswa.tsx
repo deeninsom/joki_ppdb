@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import ButtonStep from "./../component/ButtonStep"
 import FormPendaftaran from "../component/FormPendaftaran"
-import logo from "../../../assets/SMP-removebg-preview.jpg"
+import logo from "../../assets/SMP-removebg-preview.jpg"
 
 
 const PendaftaranSiswa = () => {
@@ -32,7 +32,7 @@ const PendaftaranSiswa = () => {
     setCurrentStep(0);
     setShowCardForm(prev => prev.map((_, index) => index === 0));
   }, []);
-  
+
   return (
     <>
       <section>
