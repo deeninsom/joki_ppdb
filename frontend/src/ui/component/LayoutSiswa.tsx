@@ -44,7 +44,7 @@ export const LayoutSiswa = ({ children }: { children: ReactNode })  => {
                   <i className="fa-solid fa-user"></i>
                   <span>calon siswa</span>
                 </div>
-                <span style={{ fontSize: "15px" }}>Syihabuddin</span>
+                <span style={{ fontSize: "15px" }}>Agus L.P</span>
               </div>
             </div>
             <div className="content-menu mt-4">
