@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+// import { MulterModule } from '@nestjs/platform-express';
+// import { diskStorage } from 'multer';
+// import { extname } from 'path';
 import { UploadController } from './modules/upload_data/upload.controller';
 import Users from './modules/user/user.entity';
 import { UserModule } from './modules/user/user.module';
@@ -12,19 +12,19 @@ import { SiswaModule } from './modules/siswa/siswa.module';
 
 @Module({
   imports: [
-    MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req: any, file: any, cb: any) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => (Math.round(Math.random() * 16)).toString(16))
-            .join('');
-          const fileExt = extname(file.originalname);
-          return cb(null, `${randomName}${fileExt}`);
-        },
-      }),
-    }),
+    // MulterModule.register({
+    //   storage: diskStorage({
+    //     destination: './uploads',
+    //     filename: (req: any, file: any, cb: any) => {
+    //       const randomName = Array(32)
+    //         .fill(null)
+    //         .map(() => (Math.round(Math.random() * 16)).toString(16))
+    //         .join('');
+    //       const fileExt = extname(file.originalname);
+    //       return cb(null, `${randomName}${fileExt}`);
+    //     },
+    //   }),
+    // }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST ||'localhost',
