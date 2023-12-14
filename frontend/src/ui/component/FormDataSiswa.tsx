@@ -3,25 +3,25 @@
 const FormDataSiswa = (props: any) => {
   const { setFormData, formData } = props;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
 
-    if (file) {
-      // Membaca file menggunakan FileReader
-      const reader = new FileReader();
+  //   if (file) {
+  //     // Membaca file menggunakan FileReader
+  //     const reader = new FileReader();
 
-      reader.onloadend = () => {
-        // Mengonversi file menjadi string atau array buffer, sesuai kebutuhan Anda
-        const fileContent = reader.result as string;
+  //     reader.onloadend = () => {
+  //       // Mengonversi file menjadi string atau array buffer, sesuai kebutuhan Anda
+  //       const fileContent = reader.result as string;
 
-        // Memperbarui state formData dengan fileContent
-        setFormData({ ...formData, file_rapot: fileContent });
-      };
+  //       // Memperbarui state formData dengan fileContent
+  //       setFormData({ ...formData, file_rapot: fileContent });
+  //     };
 
-      // Baca file sebagai string, Anda dapat mengubah sesuai kebutuhan
-      reader.readAsDataURL(file);
-    }
-  };
+  //     // Baca file sebagai string, Anda dapat mengubah sesuai kebutuhan
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <section>
