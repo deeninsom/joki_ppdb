@@ -27,11 +27,11 @@ import { SiswaModule } from './modules/siswa/siswa.module';
     // }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.MYSQL_HOST ||'localhost',
-      port: parseInt(process.env.MYSQL_PORT,10) || 3306,
+      host: process.env.MYSQL_HOST,
+      port: parseInt(process.env.MYSQL_PORT,10),
       username: 'root',
-      password: process.env.MYSQL_PASSWORD || '',
-      database: process.env.DATABASE || 'db_sistem_ppdb',
+      password: process.env.MYSQL_PASSWORD ,
+      database: process.env.DATABASE,
       synchronize: true,
       entities: [
         Users,
