@@ -3,8 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  OneToMany
 } from 'typeorm';
+import Siswa from '../siswa/siswa.entity';
 
 @Entity()
 export default class Users {
@@ -19,6 +21,13 @@ export default class Users {
 
   @Column({ nullable: true, default: "siswa" })
   role: string;
+
+  @OneToMany(()=> Siswa, (siswa)=> siswa.user_id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: true
+  })
+  siswa: Siswa[]
 
   @CreateDateColumn()
   public created_at: Date;

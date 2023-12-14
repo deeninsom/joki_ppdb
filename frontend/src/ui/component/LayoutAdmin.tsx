@@ -12,7 +12,7 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
   }
   const [dropdown, setDropdown] = useState(false)
 
-  const {logout} = useLogout()
+  const { logout } = useLogout()
   const handleLogout = () => {
     logout()
   }
@@ -60,7 +60,7 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
                   </li>
                   <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelulusan")} style={{ cursor: "pointer" }}>
                     <i className="ms-1 fa fa-solid fa-file"></i>
-                    <span style={{ marginLeft: "2px" }}>KELULUSAN</span>
+                    <span style={{ marginLeft: "2px" }}>VERIFIKASI LOLOS SELEKSI</span>
                   </li>
                 </ul>
                 <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>LAINYA</span>
@@ -82,13 +82,13 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
                   {
                     dropdown && (
                       <ul style={{ listStyle: "none", marginLeft: "10px" }}>
-                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola")} style={{ cursor: "pointer", fontSize: "13px" }}>
+                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola/pengumuman")} style={{ cursor: "pointer", fontSize: "13px" }}>
                           <i className="fa fa-solid fa-bell"></i>
                           <span>PENGUMUMAN</span>
                         </li>
-                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola")} style={{ cursor: "pointer", fontSize: "13px" }}>
-                          <i className="fa fa-solid fa-clipboard-list" style={{marginLeft: "1px"}}></i>
-                          <span>Ujian</span>
+                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola/ujian")} style={{ cursor: "pointer", fontSize: "13px" }}>
+                          <i className="fa fa-solid fa-clipboard-list" style={{ marginLeft: "1px" }}></i>
+                          <span>PENILAIAN UJIAN</span>
                         </li>
                         {/* <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/")} style={{ cursor: "pointer", fontSize: "13px" }}>
                       <i className="fa fa-solid fa-user"></i>

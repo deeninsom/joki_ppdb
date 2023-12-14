@@ -1,70 +1,114 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-const FormDataSiswa = () => {
+const FormDataSiswa = (props: any) => {
+  const { setFormData, formData } = props;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // Membaca file menggunakan FileReader
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        // Mengonversi file menjadi string atau array buffer, sesuai kebutuhan Anda
+        const fileContent = reader.result as string;
+
+        // Memperbarui state formData dengan fileContent
+        setFormData({ ...formData, file_rapot: fileContent });
+      };
+
+      // Baca file sebagai string, Anda dapat mengubah sesuai kebutuhan
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <section>
       <form action="" style={{ padding: "20px" }}>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Nama Lengkap <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="text" className="form-control" required />
+            <input
+              value={formData?.nama_lengkap}
+              onChange={(e) => setFormData({ ...formData, nama_lengkap: e.target.value })}
+              type="text" className="form-control" required />
           </div>
         </div>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">N.I.S.N <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="text" className="form-control" required />
+            <input
+              value={formData?.nisn}
+              onChange={(e) => setFormData({ ...formData, nisn: e.target.value })}
+              type="text" className="form-control" required />
           </div>
         </div>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">N.I.K Siswa <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="text" className="form-control" required />
+            <input
+              value={formData?.nik}
+              onChange={(e) => setFormData({ ...formData, nik: e.target.value })}
+              type="text" className="form-control" required />
           </div>
         </div>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Tempat Lahir Siswa <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="text" className="form-control" required />
+            <input
+              value={formData?.tempat_lahir}
+              onChange={(e) => setFormData({ ...formData, tempat_lahir: e.target.value })}
+              type="text" className="form-control" required />
           </div>
         </div>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Tanggal Lahir Siswa <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="date" className="form-control" required />
+            <input
+              value={formData?.tanggal_lahir}
+              onChange={(e) => setFormData({ ...formData, tanggal_lahir: e.target.value })}
+              type="date" className="form-control" required />
           </div>
         </div>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Jenis Kelamin Siswa <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <select className="form-select" aria-label="Default select example">
-              <option selected>-- Pilih --</option>
-              <option value="1">Laki - Laki</option>
-              <option value="2">Perempuan</option>
+            <select
+              value={formData?.jenis_kelamin}
+              onChange={(e) => setFormData({ ...formData, jenis_kelamin: e.target.value })}
+              className="form-select" aria-label="Default select example">
+              <option defaultValue={""}>-- Pilih --</option>
+              <option value="Laki - Laki">Laki - Laki</option>
+              <option value="Perempuan">Perempuan</option>
             </select>
           </div>
         </div>
         <div className="mb-3 row">
           <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Agama Siswa <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="text" className="form-control" required />
+            <input
+              value={formData?.agama}
+              onChange={(e) => setFormData({ ...formData, agama: e.target.value })}
+              type="text" className="form-control" required />
           </div>
         </div>
         <div className="mb-3 row">
-          <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">No. Handphone/WA</label>
+          <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">No. Handphone/WA <span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input type="text" className="form-control" />
+            <input
+              value={formData?.no_handphone}
+              onChange={(e) => setFormData({ ...formData, no_handphone: e.target.value })}
+              type="text" className="form-control" />
           </div>
         </div>
         <div className="mb-3 row">
-          <label style={{ textAlign: "end", }} htmlFor="formFileSm" className="col-sm-3 col-form-label">Upload Raport</label>
+          <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label" >Nilai Rata - rata ( rapot )<span style={{ color: "red" }}>*</span></label>
           <div className="col-sm-9 ">
-            <input className="form-control form-control-sm" id="formFileSm" type="file" />
-          </div>
-        </div>
-        <div className="mb-3 row">
-          <label style={{ textAlign: "end", }} className="col-sm-3 col-form-label">Nilai Rata - rata</label>
-          <div className="col-sm-9 ">
-            <input type="number" className="form-control" />
+            <input
+              value={formData?.nilai_rapot}
+              onChange={(e) => setFormData({ ...formData, nilai_rapot: e.target.value })}
+              type="number" className="form-control" />
           </div>
         </div>
       </form>

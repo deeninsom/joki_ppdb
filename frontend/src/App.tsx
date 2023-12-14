@@ -10,9 +10,9 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<Public_route />} />
-          <Route path="/siswa-panel*" element={<Siswa_route />} />
-          <Route path="/admin-panel*" element={<Admin_route />} />
-          <Route path="/login*" element={<Login/>} />
+          <Route path="/siswa-panel/*" element={<Siswa_route />} />
+          <Route path="/admin-panel/*" element={<Admin_route />} />
+          <Route path="/login/*" element={<Login/>} />
         </Routes>
       </BrowserRouter>
     </>

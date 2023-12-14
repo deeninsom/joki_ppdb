@@ -18,7 +18,7 @@ export class UploadController {
         schema: {
             type: 'object',
             properties: {
-                image: {
+                file: {
                     type: 'string',
                     format: 'binary',
                 },
@@ -26,7 +26,7 @@ export class UploadController {
         },
     })
     @Post()
-    @UseInterceptors(FileInterceptor('image'))
+    @UseInterceptors(FileInterceptor('file'))
     uploadFile(@UploadedFile() file, @Req() req: Request) {
         const host = req.get('host');
         const url = `${req.protocol}://${host}/api/v1/upload/${file.filename}`;

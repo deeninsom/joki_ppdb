@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SiswaService } from './siswa.service';
 import { Response } from 'express';
-import { CreateSiswaDTO, UpdateSiswaDTO } from './siswa.dto';
+import { CreateSiswaDTO, QuerySiswaDto, UpdateSiswaDTO } from './siswa.dto';
 
 @ApiTags('siswa')
 @Controller('siswa')
@@ -10,10 +10,19 @@ export class SiswaController {
     constructor(private readonly siswaService: SiswaService) { }
 
     @Get()
-    async get(@Res() res: Response) {
+    async get(@Query() query: QuerySiswaDto, @Res() res: Response) {
+        const { user_id, status, filterDate, kode_pendaftaran, page, limit } = query;
+
         try {
-            const data = await this.siswaService.get()
-            return res.status(200).json({ message: "Berhasil menampilkan siswa", data })
+            const {
+                data,
+                totalData,
+                pages,
+                limits,
+                totalPages,
+            } = await this.siswaService.get(user_id, status, filterDate, kode_pendaftaran, page, limit);
+
+            return res.status(200).json({ message: "Berhasil menampilkan siswa", data, totalData, pages, limits, totalPages })
         } catch (error) {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });

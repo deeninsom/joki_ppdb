@@ -24,7 +24,7 @@ export class AlamatDTO {
 
 export class WaliDTO {
     @ApiProperty()
-    jarak_sekolah: string;
+    nama_wali: string;
 
     @ApiProperty()
     alamat: string;
@@ -70,10 +70,11 @@ export class CreateSiswaDTO {
     no_handphone: string;
 
     @ApiProperty()
-    file_raport: string;
+    @IsOptional()
+    file_rapot: string;
 
     @ApiProperty()
-    nilai_raport: string;
+    nilai_rapot: string;
 
     @ApiProperty({ type: [AlamatDTO] })
     data_alamat: JSON;
@@ -83,6 +84,7 @@ export class CreateSiswaDTO {
 
     @ApiProperty({ type: [SekolahDTO] })
     data_sekolah: JSON;
+
 }
 
 export class UpdateSiswaDTO {
@@ -137,4 +139,53 @@ export class UpdateSiswaDTO {
     @ApiProperty({ type: [SekolahDTO] })
     @IsOptional()
     data_sekolah?: JSON;
+
+    @ApiProperty()
+    @IsOptional()
+    status?: boolean;
+
+}
+
+export class QuerySiswaDto {
+    @ApiProperty({
+        description: 'find By user_id',
+        required: false
+    })
+    @IsOptional()
+    user_id?: string
+
+    @ApiProperty({
+        description: 'find By status',
+        required: false
+    })
+    @IsOptional()
+    status?: string
+
+    @ApiProperty({
+        description: 'find By kode pendaftaran',
+        required: false
+    })
+    @IsOptional()
+    kode_pendaftaran?: string
+
+    @ApiProperty({
+        description: 'find By date',
+        required: false
+    })
+    @IsOptional()
+    filterDate?: string
+
+    @ApiProperty({
+        description: 'Set page',
+        required: true
+    })
+    @IsOptional()
+    page?: number;
+
+    @ApiProperty({
+        description: 'Set limit',
+        required: true
+    })
+    @IsOptional()
+    limit?: number;
 }

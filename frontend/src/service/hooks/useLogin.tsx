@@ -18,12 +18,13 @@ export const useLogin = () => {
       username: username,
       password: password
     })
-      .then((response) => {
+      .then(async (response) => {
         localStorage.setItem('user', JSON.stringify(response))
         dispatch({ type: 'LOGIN', payload: response })
         setIsloading(false)
         if (response.data.data.role !== 'admin') {
-          navigate('/siswa-panel')
+          const siswaId = await axiosInstance.get(`/siswa?user_id=${response.data.data.id}&&page=1&&limit=1`)
+          navigate(`/siswa-panel/${siswaId.data.data[0].id}`)
         } else {
           navigate('/admin-panel')
         }

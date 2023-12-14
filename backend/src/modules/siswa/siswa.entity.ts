@@ -3,8 +3,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
+import Users from '../user/user.entity';
 
 @Entity()
 export default class Siswa {
@@ -18,7 +21,7 @@ export default class Siswa {
   nama_lengkap: string;
 
   @Column({ nullable: true })
-  nisn: number;
+  nisn: string;
 
   @Column({ nullable: true })
   nik: number;
@@ -39,10 +42,10 @@ export default class Siswa {
   no_handphone: string;
 
   @Column({ nullable: true })
-  file_raport: string;
+  file_rapot: string;
 
   @Column({ nullable: true })
-  nilai_raport: string;
+  nilai_rapot: string;
 
   @Column({ type: 'json', nullable: true })
   data_alamat: JSON;
@@ -55,6 +58,10 @@ export default class Siswa {
 
   @Column({ default: false })
   status: boolean;
+
+  @ManyToOne(()=> Users, (user)=> user.id)
+  @JoinColumn({name: 'user_id'})
+  user_id: string
 
   @CreateDateColumn()
   public created_at: Date;

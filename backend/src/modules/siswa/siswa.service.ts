@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import Siswa from './siswa.entity';
 import Users from '../user/user.entity';
 import * as bcrypt from 'bcryptjs';
@@ -15,9 +15,45 @@ export class SiswaService {
         private userRepository: Repository<Users>,
     ) { }
 
-    async get() {
-        const findSiswa = await this.siswaRepository.find()
-        return findSiswa
+    async get(user_id: string, status: any, date: any, kode_pendaftaran: string, pages: number, limits: number) {
+        const whereCondition: any = {}
+
+        if (user_id) {
+            whereCondition.user_id = Like(`%${user_id}%`)
+        }
+
+        if (status) {
+            whereCondition.status = Like(`%${status}%`)
+        }
+
+        if (date) {
+            whereCondition.created_at = Like(`%${date}%`)
+        }
+
+        if (kode_pendaftaran) { 
+            whereCondition.kode_pendaftaran = Like(`%${kode_pendaftaran}%`)
+        }
+
+        if (pages <= 0) {
+            pages = 1;
+          }
+
+        const [data, totalData]  = await this.siswaRepository.findAndCount({
+            where: whereCondition,
+            relations: ['user_id'],
+            skip: (pages - 1) * limits,
+            take: limits,
+        })
+
+        const totalPages = Math.ceil(totalData / limits);
+
+        return {
+            data: data || [],
+            totalData,
+            pages,
+            limits,
+            totalPages,
+        };
     }
 
     async getId(id: string): Promise<any> {
@@ -29,12 +65,22 @@ export class SiswaService {
     }
 
     async create(siswaDTO: any): Promise<any> {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0].replace(/-/g, '');
+        
+        const lastNumber = await this.getLastRegisterNumber()
+        const newCodeRegister = `#${formattedDate}${lastNumber}`
 
+        siswaDTO.kode_pendaftaran = newCodeRegister
         const createSiswa = await this.siswaRepository.save(siswaDTO);
         const payload = await this.getId(createSiswa.id)
 
         // create user from siswa
-        await this.createUser(`${payload.nisn}`, `${payload.nisn}`)
+        const user = await this.createUser(`${payload.nisn}`, `${payload.nisn}`)
+
+        //update_user_id
+        payload.user_id = user.id
+        await this.siswaRepository.update(payload.id, payload)
 
         return createSiswa
     }
@@ -42,7 +88,7 @@ export class SiswaService {
     async update(id: string, payload: any): Promise<any> {
         const findSiswa = await this.getId(id)
 
-        await this.siswaRepository.save(payload)
+        await this.siswaRepository.update(findSiswa.id, payload)
         return await this.siswaRepository.findOne({ where: { id: findSiswa.id } })
     }
 
@@ -61,6 +107,33 @@ export class SiswaService {
         const hashedPassword = await bcrypt.hash(createUser.password, 10);
         createUser.password = hashedPassword;
 
-        await this.userRepository.save(createUser)
+
+        const save = await this.userRepository.save(createUser)
+        return save
     }
+
+    async getLastRegisterNumber() {
+        try {
+          const lastSiswa = await this.siswaRepository.find({
+            order: { kode_pendaftaran: 'DESC' },
+            take: 1,
+          });
+      
+          let nextNumber = 1;
+      
+          if (lastSiswa && lastSiswa.length > 0 && lastSiswa[0].kode_pendaftaran) {
+            const lastCode = lastSiswa[0].kode_pendaftaran;
+            const lastNumber = parseInt(lastCode.substr(lastCode.length - 1), 10);
+            if (!isNaN(lastNumber)) {
+              nextNumber = lastNumber + 1;
+            }
+          }
+
+          return nextNumber;
+        } catch (error) {
+          return 0; 
+        }
+      }
+      
+      
 }
