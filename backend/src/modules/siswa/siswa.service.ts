@@ -43,6 +43,7 @@ export class SiswaService {
             relations: ['user_id'],
             skip: (pages - 1) * limits,
             take: limits,
+            order: {created_at: 'ASC'}
         })
 
         const totalPages = Math.ceil(totalData / limits);
