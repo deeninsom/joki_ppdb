@@ -60,7 +60,7 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
                   </li>
                   <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelulusan")} style={{ cursor: "pointer" }}>
                     <i className="ms-1 fa fa-solid fa-file"></i>
-                    <span style={{ marginLeft: "2px" }}>VERIFIKASI LOLOS SELEKSI</span>
+                    <span style={{ marginLeft: "2px" }}>HASIL LOLOS SELEKSI</span>
                   </li>
                 </ul>
                 <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>LAINYA</span>

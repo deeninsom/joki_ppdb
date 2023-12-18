@@ -7,6 +7,7 @@ import {
   OneToMany
 } from 'typeorm';
 import Siswa from '../siswa/siswa.entity';
+import Nilai from '../nilai/nilai.entity';
 
 @Entity()
 export default class Users {

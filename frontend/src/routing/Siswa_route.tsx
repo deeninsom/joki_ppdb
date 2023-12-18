@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import {Biodata, Dashboard, Pengumuman, PengumumanUjian, PrintSeleksi} from "../ui/pages/PanelSiswa"
+import PdfTamplate from "../ui/pages/PdfTamplate"
 
 const Siswa_route = () => {
   return (
@@ -9,6 +10,7 @@ const Siswa_route = () => {
     <Route path="/pengumuman/:id" element={<Pengumuman/>}/>
     <Route path="/pengumuman-ujian/:id" element={<PengumumanUjian/>}/>
     <Route path="/print-seleksi/:id" element={<PrintSeleksi/>}/>
+    <Route path="/print-seleksi/onprint" element={<PdfTamplate/>}/>
   </Routes>
   )
 }

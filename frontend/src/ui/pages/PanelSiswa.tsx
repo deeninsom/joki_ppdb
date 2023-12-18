@@ -15,9 +15,36 @@ export const Dashboard = () => {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  const navigatePage = () => {
-    navigate(`/siswa-panel/biodata/${id}`)
+  const navigatePage = (page:string) => {
+    navigate(page)
   }
+
+  const [nilai, setNilai]: any = useState({})
+  const [siswa, setSiswa]: any = useState({})
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+        response.data.data.map((val: any) => {
+          setSiswa(val)
+          axiosInstance.get(`/nilai?siswa_id=${val.id}&&page=1&&limit=1`)
+            .then((response) => {
+              response.data.data.map((val: any) => {
+                setNilai(val)
+              })
+            })
+            .catch((error) => {
+              alert(error.response.data.message)
+            })
+        })
+      } catch (error: any) {
+        alert(error.response.data.message);
+      }
+    };
+
+    fetchUserData();
+  }, [id]);
 
   return (
     <LayoutSiswa>
@@ -27,15 +54,41 @@ export const Dashboard = () => {
             <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>INFO PENGUMUMAN</span>
           </div>
           <div className="card-body p-4">
-            <span>Belum ada pengumuman  dari Panitia PPDB Online SMP ISLAM WALISONGO</span>
+            {
+              nilai && nilai.status == 0 ? (
+                <span>Belum ada pengumuman dari panitia PPDB ONLINE SMP ISLAM WALISONGO</span>
+              ) :
+                (
+                  <div className="p-4" style={{textAlign: 'center', fontSize: "20px"}}>
+                    <p>Selamat
+                      <span className="ms-1" style={{ fontWeight: "bold", textTransform: 'uppercase' }}>{siswa.nama_lengkap}
+                      </span>
+                      <span className="bg-success ms-1 p-1" style={{fontWeight: 'bold', color: "white", borderRadius: "5px"}} >LULUS
+                      </span>
+                      <span className="ms-1">
+                        Seleksi sebagai calon peserta didik baru <span style={{fontWeight: "bold"}}>MTS WALI SONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
+                      </span>
+                    </p>
+                    <hr />
+                    <div>
+                      <button className="btn btn-success" onClick={()=> navigatePage(`/siswa-panel/print-seleksi/${id}`)}>Cetak Bukti Lulus
+                      </button>
+                    </div>
+                  </div>
+                )
+            }
           </div>
         </div>
         <div className="list-card d-flex mt-4 gap-4">
-          <div className="col-sm-5 p-4 text-center" onClick={navigatePage} style={{ backgroundColor: "#9ADE7B", color: "white", cursor: "pointer" }}>
+          <div className="col-sm-5 p-4 text-center"
+          onClick={()=> navigatePage(`/siswa-panel/biodata/${id}`)}
+           style={{ backgroundColor: "#9ADE7B", color: "white", cursor: "pointer" }}>
             <i className="fa-solid fa-file-circle-check" style={{ fontSize: "80px" }}></i>
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>BIODATA</span>
           </div>
-          <div className="col-sm-5 p-4 text-center" style={{ backgroundColor: "#29ADB2", color: "white", cursor: "pointer" }}>
+          <div className="col-sm-5 p-4 text-center"
+          onClick={()=> navigatePage(`/siswa-panel/print-seleksi/${id}`)}
+           style={{ backgroundColor: "#29ADB2", color: "white", cursor: "pointer" }}>
             <i className="fa-solid fa-print" style={{ marginTop: "2px", fontSize: "70px" }}></i>
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>PRINT HASIL SELEKSI</span>
           </div>
@@ -146,7 +199,7 @@ export const Biodata = () => {
                         <td className="p-3" style={{ width: "10%" }}>No. Pendaftaran</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled value={user.kode_pendaftaran} style={{fontWeight: 'bold', border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled value={user.kode_pendaftaran} style={{ fontWeight: 'bold', border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
@@ -257,9 +310,9 @@ export const Biodata = () => {
                   <span style={{ fontSize: "12px", display: "block" }}>{formatDate(user.created_at)}</span>
                 </div>
                 <hr />
-                <span style={{fontSize: "12px", fontWeight: "bold" }}>No. Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.kode_pendaftaran}</span></span>
+                <span style={{ fontSize: "12px", fontWeight: "bold" }}>No. Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.kode_pendaftaran}</span></span>
                 <hr />
-                <span style={{fontSize: "12px", fontWeight: "bold" }}>Status Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.status == 0 ? 'Belum Disetujui' : 'Disetujui'}</span></span>
+                <span style={{ fontSize: "12px", fontWeight: "bold" }}>Status Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.status == 0 ? 'Belum Disetujui' : 'Disetujui'}</span></span>
               </div>
               {
                 !input ? (
@@ -419,6 +472,40 @@ export const Biodata = () => {
 }
 
 export const Pengumuman = () => {
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const navigatePage = (page:string) => {
+    navigate(page)
+  }
+
+
+  const [nilai, setNilai]: any = useState({})
+  const [siswa, setSiswa]: any = useState({})
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+        response.data.data.map((val: any) => {
+          setSiswa(val)
+          axiosInstance.get(`/nilai?siswa_id=${val.id}&&page=1&&limit=1`)
+            .then((response) => {
+              response.data.data.map((val: any) => {
+                setNilai(val)
+              })
+            })
+            .catch((error) => {
+              alert(error.response.data.message)
+            })
+        })
+      } catch (error: any) {
+        alert(error.response.data.message);
+      }
+    };
+
+    fetchUserData();
+  }, [id]);
+
   return (
     <LayoutSiswa>
       <section>
@@ -427,7 +514,29 @@ export const Pengumuman = () => {
             <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>INFO PENGUMUMAN</span>
           </div>
           <div className="card-body p-4">
-            <span>Belum ada pengumuman dari Panitia PPDB Online SMP ISLAM WALISONGO</span>
+          {
+              nilai.status == 0 ? (
+                <span>Belum ada pengumuman dari panitia PPDB ONLINE SMP ISLAM WALISONGO</span>
+              ) :
+                (
+                  <div className="p-4" style={{textAlign: 'center', fontSize: "20px"}}>
+                    <p>Selamat
+                      <span className="ms-1" style={{ fontWeight: "bold", textTransform: 'uppercase' }}>{siswa.nama_lengkap}
+                      </span>
+                      <span className="bg-success ms-1 p-1" style={{fontWeight: 'bold', color: "white", borderRadius: "5px"}} >LULUS
+                      </span>
+                      <span className="ms-1">
+                        Seleksi sebagai calon peserta didik baru <span style={{fontWeight: "bold"}}>MTS WALI SONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
+                      </span>
+                    </p>
+                    <hr />
+                    <div>
+                      <button onClick={()=> navigatePage(`/siswa-panel/print-seleksi/${id}`)} className="btn btn-success">Cetak Bukti Lulus
+                      </button>
+                    </div>
+                  </div>
+                )
+            }
           </div>
         </div>
       </section>
@@ -436,6 +545,17 @@ export const Pengumuman = () => {
 }
 
 export const PengumumanUjian = () => {
+  const [pengumumanUjian, setPengumumanUjian]: any = useState({})
+  useEffect(() => {
+    axiosInstance.get('/websites/1')
+      .then((response) => {
+        setPengumumanUjian(response.data.data)
+      })
+      .catch((error) => {
+        console.error('Error updating status:', error);
+      });
+  }, [])
+
   return (
     <LayoutSiswa>
       <section>
@@ -444,7 +564,7 @@ export const PengumumanUjian = () => {
             <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>INFO UJIAN</span>
           </div>
           <div className="card-body p-4">
-            <span>Belum ada pengumuman dari Panitia PPDB Online SMP ISLAM WALISONGO</span>
+            <span>{pengumumanUjian.pengumuman_ujian}</span>
           </div>
         </div>
       </section>

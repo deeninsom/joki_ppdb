@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import LayoutPengunjung from "../component/LayoutPengunjung"
 import { useNavigate } from "react-router-dom"
 import logo from "../../assets/SMP-removebg-preview.jpg"
 import backgroundImage from "../../assets/image_bg.jpg"
 import shape1 from '../../assets/telah-dibuka.png'
 import alur from "../../assets/ALUR.png"
+import { useEffect, useState } from "react"
+import axiosInstance from "../../service/_api"
 
 
 
@@ -14,6 +17,19 @@ const LandingPage = () => {
   const handlePendaftaran = (route: string) => {
     navigate(route)
   }
+
+  const [website, setWebsite]: any = useState({})
+
+  useEffect(() => {
+    axiosInstance.get(`/websites/1`)
+      .then((response) => {
+        setWebsite(response.data.data)
+      })
+      .catch((error: any) => {
+        alert(error)
+      })
+  }, [])
+
   return (
     <LayoutPengunjung>
       <section className="content-jumbotron" style={{ height: "500px", backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}>
@@ -27,7 +43,16 @@ const LandingPage = () => {
               <span>SMP ISLAM WALISONGO</span>
             </div>
             <div className="button-flex d-flex gap-2 justify-content-center" style={{ marginTop: "20px" }}>
-              <button onClick={() => handlePendaftaran('/form-pendaftaran')} className="btn btn-primary"><i className="fa fa-solid fa-clipboard-list me-2"></i>DAFTAR</button>
+              {
+                website.status_pendaftaran == 0 ?
+                  (
+                    <button onClick={() => handlePendaftaran('/form-pendaftaran')} disabled className="btn btn-danger" style={{ backgroundColor: 'red' }}><i className="fa fa-solid fa-clipboard-list me-2"></i>PENDAFTARAN DITUTUP</button>
+                  ) :
+                  (
+                    <button onClick={() => handlePendaftaran('/form-pendaftaran')} className="btn btn-primary"><i className="fa fa-solid fa-clipboard-list me-2"></i>DAFTAR</button>
+                  )
+
+              }
               <button onClick={() => handlePendaftaran('/login')} className="btn btn-primary"><i className="fa fa-solid fa-arrow-right-to-bracket me-2"></i>MASUK</button>
             </div>
           </div>
@@ -56,12 +81,30 @@ const LandingPage = () => {
         <div className="d-flex justify-content-center">
           <div className="card" style={{ height: "350px", width: "50%", padding: "20px", backgroundColor: "#527853", color: "white" }}>
             <span className="text-center my-3" style={{ fontSize: "30px", fontWeight: "bold" }}>PENERIMAAN PESERTA DIDIK BARU</span>
-            <span className="text-center my-3" style={{ backgroundImage: `url(${shape1})`, width: "100%" }}>
-              Telah Dibuka !</span>
-            <div className="card p-4">
-              <span>
-                Pendaftaran dibuka mulai 7 November 2022 – 7 Januari 2023. Segera daftarkan putra-putri anda sebelum kuota habis. Pendaftaran bisa dilakukan secara  registrasi online melalui official website kami
-              </span></div>
+            {
+              website.status_pendaftaran != 0 ?
+                (
+                  <>
+                    <span className="text-center my-3" style={{ backgroundImage: `url(${shape1})`, width: "100%" }}>
+                      Telah Dibuka !</span>
+                    <div className="card p-4">
+                      <span>
+                        {website.pengumuman_umum}
+                      </span></div>
+                  </>
+                ) :
+                (
+                  <>
+                    <span className="text-center my-3" style={{ backgroundImage: `url(${shape1})`, width: "100%" }}>
+                      Masih Ditutup !</span>
+                    <div className="card p-4">
+                      <span>
+                        Belum ada pemberitahuan lebih lanjut !
+                      </span>
+                      </div>
+                  </>
+                )
+            }
           </div>
         </div>
       </section>

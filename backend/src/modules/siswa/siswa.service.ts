@@ -59,7 +59,8 @@ export class SiswaService {
 
     async getId(id: string): Promise<any> {
         const findSiswa = await this.siswaRepository.findOne({
-            where: { id }
+            where: { id },
+            relations: ['user_id']
         });
         if (!findSiswa) throw new HttpException(`Siswa dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
         return findSiswa
@@ -95,7 +96,20 @@ export class SiswaService {
 
     async delete(id: string): Promise<void> {
         const findSiswa = await this.getId(id)
-        await this.siswaRepository.delete(findSiswa.id)
+
+        console.log(findSiswa.user_id.id)
+        const deleteSiswa = await this.siswaRepository.delete(findSiswa.id)
+        // const deleteUser = await this.userRepository.findOne({
+        //     where: {
+        //         id: findSiswa.user_id.id
+        //     }
+        // })
+
+        // console.log(deleteUser)
+        // if(deleteSiswa){
+        //     await this.userRepository.delete(deleteUser.id)
+        // }
+
     }
 
     private async createUser(username: string, password: string) {

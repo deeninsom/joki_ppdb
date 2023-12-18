@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from 'typeorm';
 import Users from '../user/user.entity';
+import Nilai from '../nilai/nilai.entity';
 
 @Entity()
 export default class Siswa {
@@ -62,6 +64,13 @@ export default class Siswa {
   @ManyToOne(()=> Users, (user)=> user.id)
   @JoinColumn({name: 'user_id'})
   user_id: string
+
+  @OneToMany(()=> Nilai, (siswa)=> siswa.siswa_id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: true
+  })
+  siswa: Siswa[]
 
   @CreateDateColumn()
   public created_at: Date;
