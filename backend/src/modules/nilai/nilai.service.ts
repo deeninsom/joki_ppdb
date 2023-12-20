@@ -105,7 +105,7 @@ export class NilaiService {
                 nisn: findNilai.siswa_id?.nisn || '',
                 kode_pendaftaran: findNilai.siswa_id?.kode_pendaftaran || '',
                 data_wali: {
-                    nama_wali: findNilai.siswa_id?.data_wali[0]?.nama_wali || ''
+                    nama_wali: findNilai.siswa_id.data_wali.nama_wali || ''
                 }
             }
         };
@@ -206,17 +206,17 @@ export class NilaiService {
         <li class="d-flex my-2">
           <div style="width: 30%;">Nama</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id?.nama_lengkap}</div>
+          <div class="ms-2">${customData.siswa_id.nama_lengkap}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">Tempat, Tanggal Lahir</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id?.ttl}</div>
+          <div class="ms-2">${customData.siswa_id.ttl}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">NISN</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id?.nisn}</div>
+          <div class="ms-2">${customData.siswa_id.nisn}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">NAMA ORANG TUA</div>
@@ -226,7 +226,7 @@ export class NilaiService {
         <li class="d-flex my-2">
           <div style="width: 30%;">No. Peserta UM</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id?.kode_pendaftaran}</div>
+          <div class="ms-2">${customData.siswa_id.kode_pendaftaran}</div>
         </li>
       </ul>
       <div class="status"
