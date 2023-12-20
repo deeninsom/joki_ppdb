@@ -46,9 +46,9 @@ export const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`/nilai?status_seleksi=1&page=${1}&limit=${10}`)
+    axiosInstance.get(`/nilai?status_seleksi=lolos&page=${1}&limit=${10}`)
       .then((response) => {
-        setlolosSeleksi(response.data.data.length)
+        setlolosSeleksi(response.data.totalData)
       })
       .catch((error: any) => {
         alert(error)
@@ -56,9 +56,9 @@ export const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    axiosInstance.get(`/nilai?status_seleksi=0&page=${1}&limit=${10}`)
+    axiosInstance.get(`/nilai?status_seleksi=tidak lolos&page=${1}&limit=${10}`)
       .then((response) => {
-        setTidakLolosSeleksi(response.data.data.length)
+        setTidakLolosSeleksi(response.data.totalData)
       })
       .catch((error: any) => {
         alert(error)
