@@ -99,13 +99,13 @@ export class NilaiService {
         const customData = {
             nilai_ujian: findNilai?.nilai_ujian,
             siswa_id: {
-                id: findNilai?.siswa_id?.id,
-                nama_lengkap: findNilai?.siswa_id?.nama_lengkap,
-                ttl: `${findNilai?.siswa_id?.tempat_lahir}, ${findNilai?.siswa_id?.tanggal_lahir}`,
-                nisn: findNilai?.siswa_id?.nisn,
-                kode_pendaftaran: findNilai?.siswa_id?.kode_pendaftaran,
+                id: findNilai.siswa_id?.id || '',
+                nama_lengkap: findNilai.siswa_id?.nama_lengkap || '',
+                ttl: `${findNilai?.siswa_id?.tempat_lahir}, ${findNilai?.siswa_id?.tanggal_lahir}` || '',
+                nisn: findNilai.siswa_id?.nisn || '',
+                kode_pendaftaran: findNilai.siswa_id?.kode_pendaftaran || '',
                 data_wali: {
-                    nama_wali: findNilai?.siswa_id?.data_wali[0]?.nama_wali
+                    nama_wali: findNilai.siswa_id?.data_wali[0]?.nama_wali || ''
                 }
             }
         };
