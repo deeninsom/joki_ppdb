@@ -19,19 +19,6 @@ export const Dashboard = () => {
     navigate(page)
   }
 
-  const [siswa, setSiswa]: any = useState({})
-
-  useEffect(() => {
-
-    const fetchData = async () => {
-      const response: any = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
-      const siswaData = response.data.data[0]
-      setSiswa(siswaData)
-    }
-
-    fetchData()
-  }, [id]);
-
   return (
     <LayoutSiswa>
       <section>
@@ -49,17 +36,17 @@ export const Dashboard = () => {
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>PRINT HASIL SELEKSI</span>
           </div>
         </div>
-        <div className="list-card d-flex gap-4 mt-4" style={{ marginLeft: "10%" }}>
-          <div className="col-sm-5 p-4 text-center"
+        <div className="list-card d-flex gap-4 mt-4 " style={{ marginLeft: "10%" }}>
+          <div className="col-sm-5 p-4 text-center bg-danger"
             onClick={() => navigatePage(`/siswa-panel/pengumuman/${id}`)}
-            style={{ backgroundColor: "#9ADE7B", color: "white", cursor: "pointer" }}>
-            <i className="fa-solid fa-file-circle-check" style={{ fontSize: "80px" }}></i>
+            style={{  color: "white", cursor: "pointer" }}>
+            <i className="fa-solid fa-volume-high" style={{ fontSize: "80px" }}></i>
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>PENGUMUMAN</span>
           </div>
-          <div className="col-sm-5 p-4 text-center"
+          <div className="col-sm-5 p-4 text-center bg-warning"
             onClick={() => navigatePage(`/siswa-panel/pengumuman-ujian/${id}`)}
-            style={{ backgroundColor: "#29ADB2", color: "white", cursor: "pointer" }}>
-            <i className="fa-solid fa-print" style={{ marginTop: "2px", fontSize: "70px" }}></i>
+            style={{ color: "white", cursor: "pointer" }}>
+            <i className="fa-solid fa-volume-high" style={{ marginTop: "2px", fontSize: "70px" }}></i>
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>UJIAN</span>
           </div>
         </div>
@@ -184,13 +171,6 @@ export const Biodata = () => {
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
                           <input type="text" disabled={!input} onChange={(e) => handleInputChange('nisn', '', e.target.value)} value={user.nisn} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
-                        </td>
-                      </tr>
-                      <tr style={{ fontSize: "12px" }}>
-                        <td className="p-3" style={{ width: "10%" }}>N.I.K</td>
-                        <td className="p-3 " style={{ width: "2%" }}>:</td>
-                        <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('nik', '', e.target.value)} value={user.nik} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
