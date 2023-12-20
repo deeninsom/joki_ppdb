@@ -105,7 +105,7 @@ export class NilaiService {
                 nisn: findNilai?.siswa_id?.nisn,
                 kode_pendaftaran: findNilai?.siswa_id?.kode_pendaftaran,
                 data_wali: {
-                    nama_wali: findNilai?.siswa_id?.data_wali[0].nama_wali
+                    nama_wali: findNilai?.siswa_id?.data_wali[0]?.nama_wali
                 }
             }
         };
@@ -206,27 +206,27 @@ export class NilaiService {
         <li class="d-flex my-2">
           <div style="width: 30%;">Nama</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id.nama_lengkap}</div>
+          <div class="ms-2">${customData.siswa_id?.nama_lengkap}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">Tempat, Tanggal Lahir</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id.ttl}</div>
+          <div class="ms-2">${customData.siswa_id?.ttl}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">NISN</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id.nisn}</div>
+          <div class="ms-2">${customData.siswa_id?.nisn}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">NAMA ORANG TUA</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id.data_wali.nama_wali}</div>
+          <div class="ms-2">${customData.siswa_id.data_wali?.nama_wali}</div>
         </li>
         <li class="d-flex my-2">
           <div style="width: 30%;">No. Peserta UM</div>
           <div>:</div>
-          <div class="ms-2">${customData.siswa_id.kode_pendaftaran}</div>
+          <div class="ms-2">${customData.siswa_id?.kode_pendaftaran}</div>
         </li>
       </ul>
       <div class="status"
@@ -237,7 +237,7 @@ export class NilaiService {
         <p style="text-indent: 25px; font-size: 15px; width: 90%;">
           Dari Satuan Pendidikan berdasarkan hasil Ujian Madrasah (UM) serta telah
           memenuhi kriteria kelulusan sesuai ketetapan yang berlaku di Madrasah
-          Ibtidaiyah MISBAHUL ULUM dengan nilai <span style="font-weight: bold;">${customData.nilai_ujian}</span>.
+          Ibtidaiyah MISBAHUL ULUM dengan nilai <span style="font-weight: bold;">${customData?.nilai_ujian}</span>.
         </p>
       </div>
       <div class="text-3" style="margin-left: 11%; margin-top: 3%;">

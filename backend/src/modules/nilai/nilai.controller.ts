@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CreateNilaiDTO, UpdateNilaiDTO, QueryNilaiDto, PostId } from './nilai.dto';
+import { CreateNilaiDTO, UpdateNilaiDTO, QueryNilaiDto } from './nilai.dto';
 import { NilaiService } from './nilai.service';
 
 @ApiTags('nilai')
