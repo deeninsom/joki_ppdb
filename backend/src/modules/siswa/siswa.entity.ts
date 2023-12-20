@@ -11,6 +11,13 @@ import {
 import Users from '../user/user.entity';
 import Nilai from '../nilai/nilai.entity';
 
+export enum Status {
+  menunggu = 'menunggu',
+  lolos = 'lolos',
+  tidak_lolos = 'tidak lolos'
+}
+
+
 @Entity()
 export default class Siswa {
   @PrimaryGeneratedColumn('uuid')
@@ -55,8 +62,8 @@ export default class Siswa {
   @Column({ type: 'json', nullable: true })
   data_sekolah: JSON;
 
-  @Column({ default: false })
-  status: boolean;
+  @Column({default: Status.menunggu })
+  status: Status;
 
   @ManyToOne(()=> Users, (user)=> user.id)
   @JoinColumn({name: 'user_id'})

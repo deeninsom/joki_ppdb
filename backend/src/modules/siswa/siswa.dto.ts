@@ -139,7 +139,7 @@ export class UpdateSiswaDTO {
 
     @ApiProperty()
     @IsOptional()
-    status?: boolean;
+    status?: string;
 
 }
 

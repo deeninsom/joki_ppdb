@@ -122,7 +122,6 @@ export const Verifikasi = () => {
 
   const [viewSiswa, setViewSiswa] = useState([])
   const [viewDetailSiswa, setViewDetailSiswa]: any = useState({})
-  const [selectedStatus, setSelectedStatus] = useState("false");
   const [searchValue, setSearchValue] = useState("");
   const [limit, setLimit] = useState(5)
   const [page, setPage] = useState(1)
@@ -130,7 +129,7 @@ export const Verifikasi = () => {
   const [selectedDate, setSelectedDate] = useState("");
 
   useEffect(() => {
-    axiosInstance.get(`/siswa?kode_pendaftaran=${searchValue.slice(1)}&status=0&page=${page}&limit=${limit}&filterDate=${selectedDate}`)
+    axiosInstance.get(`/siswa?kode_pendaftaran=${searchValue.slice(1)}&status=menunggu&page=${page}&limit=${limit}&filterDate=${selectedDate}`)
       .then((response) => {
         setViewSiswa(response.data.data)
         setLimit(response.data.limits)
@@ -167,7 +166,6 @@ export const Verifikasi = () => {
   }
 
   const changeStatus = (id: string) => {
-    viewDetailSiswa.status = Boolean(selectedStatus)
     axiosInstance.put(`/siswa/${id}`, viewDetailSiswa)
       .then(() => {
         window.location.reload()
@@ -206,7 +204,6 @@ export const Verifikasi = () => {
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "4%" }}>No</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "10%" }}>No. Pendaftaran</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "12%" }}>NISN</th>
-                  <th style={{ fontWeight: "bold", fontSize: "11px", width: "15%" }}>NIK</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "15%" }}>Nama</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Status</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Aksi</th>
@@ -219,14 +216,11 @@ export const Verifikasi = () => {
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>{index + 1}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.kode_pendaftaran}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.nisn}</td>
-                      <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.nik}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.nama_lengkap}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>
                         {
-                          val.status == 0 ? (
+                          val.status === 'menunggu' && (
                             <span className="d-flex justify-content-center bg-warning" style={{ padding: "7px", fontSize: "10px", borderRadius: "8px" }}>BELUM TERVERIFIKASI</span>
-                          ) : (
-                            <span className="d-flex justify-content-center" style={{ backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px" }}>TERVERIFIKASI</span>
                           )
                         }
                       </td>
@@ -296,11 +290,6 @@ export const Verifikasi = () => {
                   <div style={{ width: "40%" }}>NISN</div>
                   <div>:</div>
                   <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.nisn}</div>
-                </li>
-                <li className="d-flex my-2">
-                  <div style={{ width: "40%" }}>NIK</div>
-                  <div>:</div>
-                  <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.nik}</div>
                 </li>
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Tempat Lahir</div>
@@ -442,11 +431,6 @@ export const Verifikasi = () => {
                   <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.nisn}</div>
                 </li>
                 <li className="d-flex my-2">
-                  <div style={{ width: "40%" }}>NIK</div>
-                  <div>:</div>
-                  <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.nik}</div>
-                </li>
-                <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Tempat Lahir</div>
                   <div>:</div>
                   <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.tempat_lahir}</div>
@@ -567,11 +551,11 @@ export const Verifikasi = () => {
                 <div className="col-4">
                   <select
                     value={viewDetailSiswa.status}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    onChange={(e: any) => setViewDetailSiswa({...viewDetailSiswa, status: e.target.value})}
                     className="form-select" aria-label="Default select example">
                     <option selected>Pilih Status</option>
-                    <option value="true">Diterima</option>
-                    <option value="false">Tidak Diterima</option>
+                    <option value="lolos">Diterima</option>
+                    <option value="tidak lolos">Tidak Diterima</option>
                   </select>
                 </div>
                 <button className="btn btn-primary d-flex align-items-center gap-2" style={{ fontSize: "12px" }} onClick={() => changeStatus(viewDetailSiswa?.id)}>
@@ -888,8 +872,9 @@ export const KelolaUjian = () => {
 
   useEffect(() => {
     axiosInstance
-      .get(`/siswa?status=1&page=${page}&limit=${limit}`)
+      .get(`/siswa?status=lolos&page=${page}&limit=${limit}`)
       .then((response) => {
+        console.log(response.data)
         const filteredSiswa = response.data.data.filter(
           (siswa: any) =>
             !viewNilai.some((nilai: any) => nilai.siswa_id.id === siswa.id)

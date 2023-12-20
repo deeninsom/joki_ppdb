@@ -105,7 +105,7 @@ export class NilaiService {
                 nisn: findNilai.siswa_id?.nisn || '',
                 kode_pendaftaran: findNilai.siswa_id?.kode_pendaftaran || '',
                 data_wali: {
-                    nama_wali: findNilai.siswa_id.data_wali.nama_wali || ''
+                    nama_wali: findNilai.siswa_id.data_wali[0].nama_wali || ''
                 }
             }
         };
