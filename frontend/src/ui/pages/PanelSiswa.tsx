@@ -15,82 +15,52 @@ export const Dashboard = () => {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  const navigatePage = (page:string) => {
+  const navigatePage = (page: string) => {
     navigate(page)
   }
 
-  const [nilai, setNilai]: any = useState({})
   const [siswa, setSiswa]: any = useState({})
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
-        response.data.data.map((val: any) => {
-          setSiswa(val)
-          axiosInstance.get(`/nilai?siswa_id=${val.id}&&page=1&&limit=1`)
-            .then((response) => {
-              response.data.data.map((val: any) => {
-                setNilai(val)
-              })
-            })
-            .catch((error) => {
-              alert(error.response.data.message)
-            })
-        })
-      } catch (error: any) {
-        alert(error.response.data.message);
-      }
-    };
 
-    fetchUserData();
+    const fetchData = async () => {
+      const response: any = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+      const siswaData = response.data.data[0]
+      setSiswa(siswaData)
+    }
+
+    fetchData()
   }, [id]);
 
   return (
     <LayoutSiswa>
       <section>
-        <div className="card">
-          <div className="card-header" style={{ backgroundColor: "GrayText" }}>
-            <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>INFO PENGUMUMAN</span>
-          </div>
-          <div className="card-body p-4">
-            {
-              nilai && nilai.status == 0 ? (
-                <span>Belum ada pengumuman dari panitia PPDB ONLINE SMP ISLAM WALISONGO</span>
-              ) :
-                (
-                  <div className="p-4" style={{textAlign: 'center', fontSize: "20px"}}>
-                    <p>Selamat
-                      <span className="ms-1" style={{ fontWeight: "bold", textTransform: 'uppercase' }}>{siswa.nama_lengkap}
-                      </span>
-                      <span className="bg-success ms-1 p-1" style={{fontWeight: 'bold', color: "white", borderRadius: "5px"}} >LULUS
-                      </span>
-                      <span className="ms-1">
-                        Seleksi sebagai calon peserta didik baru <span style={{fontWeight: "bold"}}>MTS WALI SONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
-                      </span>
-                    </p>
-                    <hr />
-                    <div>
-                      <button className="btn btn-success" onClick={()=> navigatePage(`/siswa-panel/print-seleksi/${id}`)}>Cetak Bukti Lulus
-                      </button>
-                    </div>
-                  </div>
-                )
-            }
-          </div>
-        </div>
-        <div className="list-card d-flex mt-4 gap-4">
+        <div className="list-card d-flex gap-4" style={{ marginTop: "10%", marginLeft: "10%" }}>
           <div className="col-sm-5 p-4 text-center"
-          onClick={()=> navigatePage(`/siswa-panel/biodata/${id}`)}
-           style={{ backgroundColor: "#9ADE7B", color: "white", cursor: "pointer" }}>
+            onClick={() => navigatePage(`/siswa-panel/biodata/${id}`)}
+            style={{ backgroundColor: "#9ADE7B", color: "white", cursor: "pointer" }}>
             <i className="fa-solid fa-file-circle-check" style={{ fontSize: "80px" }}></i>
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>BIODATA</span>
           </div>
           <div className="col-sm-5 p-4 text-center"
-          onClick={()=> navigatePage(`/siswa-panel/print-seleksi/${id}`)}
-           style={{ backgroundColor: "#29ADB2", color: "white", cursor: "pointer" }}>
+            onClick={() => navigatePage(`/siswa-panel/print-seleksi/${id}`)}
+            style={{ backgroundColor: "#29ADB2", color: "white", cursor: "pointer" }}>
             <i className="fa-solid fa-print" style={{ marginTop: "2px", fontSize: "70px" }}></i>
             <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>PRINT HASIL SELEKSI</span>
+          </div>
+        </div>
+        <div className="list-card d-flex gap-4 mt-4" style={{ marginLeft: "10%" }}>
+          <div className="col-sm-5 p-4 text-center"
+            onClick={() => navigatePage(`/siswa-panel/pengumuman/${id}`)}
+            style={{ backgroundColor: "#9ADE7B", color: "white", cursor: "pointer" }}>
+            <i className="fa-solid fa-file-circle-check" style={{ fontSize: "80px" }}></i>
+            <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>PENGUMUMAN</span>
+          </div>
+          <div className="col-sm-5 p-4 text-center"
+            onClick={() => navigatePage(`/siswa-panel/pengumuman-ujian/${id}`)}
+            style={{ backgroundColor: "#29ADB2", color: "white", cursor: "pointer" }}>
+            <i className="fa-solid fa-print" style={{ marginTop: "2px", fontSize: "70px" }}></i>
+            <span style={{ fontSize: "14px", fontWeight: "bold", paddingTop: "20px", display: "block" }}>UJIAN</span>
           </div>
         </div>
       </section>
@@ -474,7 +444,7 @@ export const Biodata = () => {
 export const Pengumuman = () => {
   const navigate = useNavigate()
   const { id } = useParams()
-  const navigatePage = (page:string) => {
+  const navigatePage = (page: string) => {
     navigate(page)
   }
 
@@ -483,27 +453,18 @@ export const Pengumuman = () => {
   const [siswa, setSiswa]: any = useState({})
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
-        response.data.data.map((val: any) => {
-          setSiswa(val)
-          axiosInstance.get(`/nilai?siswa_id=${val.id}&&page=1&&limit=1`)
-            .then((response) => {
-              response.data.data.map((val: any) => {
-                setNilai(val)
-              })
-            })
-            .catch((error) => {
-              alert(error.response.data.message)
-            })
-        })
-      } catch (error: any) {
-        alert(error.response.data.message);
-      }
-    };
 
-    fetchUserData();
+    const fetchData = async () => {
+      const response: any = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+      const siswaData = response.data.data[0]
+      setSiswa(siswaData)
+
+      const nilaiResponse: any = await axiosInstance.get(`/nilai?siswa_id=${siswaData.id}&&page=1&&limit=1`);
+      const nilaiData = nilaiResponse.data.data[0];
+      setNilai(nilaiData)
+    }
+
+    fetchData()
   }, [id]);
 
   return (
@@ -514,28 +475,50 @@ export const Pengumuman = () => {
             <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>INFO PENGUMUMAN</span>
           </div>
           <div className="card-body p-4">
-          {
-              nilai.status == 0 ? (
+            {
+              !nilai && (
                 <span>Belum ada pengumuman dari panitia PPDB ONLINE SMP ISLAM WALISONGO</span>
-              ) :
-                (
-                  <div className="p-4" style={{textAlign: 'center', fontSize: "20px"}}>
-                    <p>Selamat
-                      <span className="ms-1" style={{ fontWeight: "bold", textTransform: 'uppercase' }}>{siswa.nama_lengkap}
-                      </span>
-                      <span className="bg-success ms-1 p-1" style={{fontWeight: 'bold', color: "white", borderRadius: "5px"}} >LULUS
-                      </span>
-                      <span className="ms-1">
-                        Seleksi sebagai calon peserta didik baru <span style={{fontWeight: "bold"}}>MTS WALI SONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
-                      </span>
-                    </p>
-                    <hr />
-                    <div>
-                      <button onClick={()=> navigatePage(`/siswa-panel/print-seleksi/${id}`)} className="btn btn-success">Cetak Bukti Lulus
-                      </button>
-                    </div>
+              )
+            }
+            {
+              nilai && nilai.status === 'menunggu' && (
+                <span>Belum ada pengumuman dari panitia PPDB ONLINE SMP ISLAM WALISONGO</span>
+              )
+            }
+            {
+              nilai && nilai.status === 'tidak lolos' && (
+                <div className="p-4" style={{ textAlign: 'center', fontSize: "20px" }}>
+                  <p>Mohon maaf
+                    <span className="ms-1" style={{ fontWeight: "bold", textTransform: 'uppercase' }}>{siswa.nama_lengkap}
+                    </span>
+                    <span className="bg-danger ms-1 p-1" style={{ fontWeight: 'bold', color: "white", borderRadius: "5px" }} >Tidak LULUS
+                    </span>
+                    <span className="ms-1">
+                      Seleksi sebagai calon peserta didik baru <span style={{ fontWeight: "bold" }}>MTS WALI SONGO,</span> Anda bisa mengikuti tahun berikutnya.
+                    </span>
+                  </p>
+                </div>
+              )
+            }
+            {
+              nilai && nilai.status === 'lolos' && (
+                <div className="p-4" style={{ textAlign: 'center', fontSize: "20px" }}>
+                  <p>Selamat
+                    <span className="ms-1" style={{ fontWeight: "bold", textTransform: 'uppercase' }}>{siswa.nama_lengkap}
+                    </span>
+                    <span className="bg-success ms-1 p-1" style={{ fontWeight: 'bold', color: "white", borderRadius: "5px" }} >LULUS
+                    </span>
+                    <span className="ms-1">
+                      Seleksi sebagai calon peserta didik baru <span style={{ fontWeight: "bold" }}>MTS WALI SONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
+                    </span>
+                  </p>
+                  <hr />
+                  <div>
+                    <button onClick={() => navigatePage(`/siswa-panel/print-seleksi/${id}`)} className="btn btn-success">Cetak Bukti Lulus
+                    </button>
                   </div>
-                )
+                </div>
+              )
             }
           </div>
         </div>
@@ -556,6 +539,7 @@ export const PengumumanUjian = () => {
       });
   }, [])
 
+
   return (
     <LayoutSiswa>
       <section>
@@ -573,6 +557,57 @@ export const PengumumanUjian = () => {
 }
 
 export const PrintSeleksi = () => {
+
+  const { id } = useParams()
+  const [nilai, setNilai]: any = useState({})
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+        response.data.data.forEach((val: any) => {
+          axiosInstance.get(`/nilai?siswa_id=${val.id}&page=1&&limit=1`)
+            .then((response) => {
+              response.data.data.forEach((val: any) => {
+                setNilai(val);
+              });
+            })
+            .catch((error) => {
+              alert(error.response.data.message);
+            });
+        });
+      } catch (error: any) {
+        alert(error.response.data.message);
+      }
+    };
+
+    fetchUserData();
+  }, [id]);
+
+  const handlePrint = async (id: string) => {
+    const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+
+    const pdfResponse = await axiosInstance.get(`/nilai/generate-pdf/${response.data.data[0].id}`, {
+      responseType: 'blob', // Specify the response type as 'blob' to handle binary data
+    });
+
+    const blob = new Blob([pdfResponse.data], { type: 'application/pdf' });
+
+    // Create a URL for the Blob
+    const url = window.URL.createObjectURL(blob);
+
+    // Create an anchor element to trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'HASIL SELEKSI.pdf';
+
+    // Append the anchor to the document and trigger a click event
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+  }
+
   return (
     <LayoutSiswa>
       <section>
@@ -580,11 +615,20 @@ export const PrintSeleksi = () => {
           <div className="card-header" style={{ backgroundColor: "GrayText" }}>
             <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>Hasil Seleksi</span>
           </div>
-          <div className="card-body p-4">
-            <button className="btn btn-primary" style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }}><i className="fa-solid fa-print me-3"></i>Print Hasil Seleksi!</button>
+          <div className="card-body p-4" >
+            {
+              nilai && nilai.status !== 'lolos' ? (
+                <button disabled className="btn btn-secondary" style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }}><i className="fa-solid fa-print me-3"></i>Print Hasil Seleksi!</button>
+              ) : (
+                <>
+                <button className="btn btn-primary" style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }} onClick={()=> handlePrint(`${id}`)}><i className="fa-solid fa-print me-3"></i>Print Hasil Seleksi!</button>
+                </>
+              )
+            }
           </div>
         </div>
       </section>
+
     </LayoutSiswa>
   )
 }

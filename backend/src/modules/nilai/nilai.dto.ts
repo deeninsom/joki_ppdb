@@ -14,6 +14,11 @@ export class CreateNilaiDTO {
 
 }
 
+export class PostId{
+    @ApiProperty()
+    siswa_id: string;
+}
+
 export class UpdateNilaiDTO {
 
     @ApiProperty()
@@ -26,7 +31,7 @@ export class UpdateNilaiDTO {
 
     @ApiProperty()
     @IsOptional()
-    status?: boolean;
+    status?: string;
 
 }
 

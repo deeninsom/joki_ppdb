@@ -28,7 +28,6 @@ const FormPendaftaran = (props: any) => {
   const [formData, setFormData] = useState({
     nama_lengkap: "",
     nisn: 0,
-    nik: 0,
     tempat_lahir: "",
     tanggal_lahir: "",
     jenis_kelamin: "",

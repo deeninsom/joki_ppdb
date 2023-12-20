@@ -52,9 +52,6 @@ export class CreateSiswaDTO {
     nisn: number;
 
     @ApiProperty()
-    nik: number;
-
-    @ApiProperty()
     tempat_lahir: string;
 
     @ApiProperty()

@@ -99,13 +99,13 @@ export const Dashboard = () => {
                 website.status_pendaftaran == 0 ?
                   (
                     <>
-                      <button className="btn btn-danger" onClick={()=> updateStatusPendaftaran(true)} style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }}><i className="fa-solid fa-laptop me-1"></i>Buka Pendaftaran PPDB Online!</button>
+                      <button className="btn btn-danger" onClick={() => updateStatusPendaftaran(true)} style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }}><i className="fa-solid fa-laptop me-1"></i>Buka Pendaftaran PPDB Online!</button>
                       <div style={{ fontSize: "13px" }}><span style={{ fontWeight: "bold", fontSize: "14px" }}>Status pendaftaran PPDB Online</span> masih ditutup. Terakhir diubah {website.updated_at}</div>
                     </>
                   ) :
                   (
                     <>
-                      <button className="btn btn-primary" onClick={()=> updateStatusPendaftaran(false)} style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }}><i className="fa-solid fa-laptop me-1"></i>Tutup Pendaftaran PPDB Online!</button>
+                      <button className="btn btn-primary" onClick={() => updateStatusPendaftaran(false)} style={{ width: "250px", fontSize: "13px", fontWeight: "bold" }}><i className="fa-solid fa-laptop me-1"></i>Tutup Pendaftaran PPDB Online!</button>
                       <div style={{ fontSize: "13px" }}><span style={{ fontWeight: "bold", fontSize: "14px" }}>Status pendaftaran PPDB Online</span> masih dibuka. Terakhir diubah {website.updated_at}</div>
                     </>
                   )
@@ -603,7 +603,7 @@ export const Kelulusan = () => {
   const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
-    axiosInstance.get(`/nilai?kode_pendaftaran=${searchValue.slice(1)}&status_seleksi=1&page=${page}&limit=${limit}`)
+    axiosInstance.get(`/nilai?kode_pendaftaran=${searchValue.slice(1)}&status_seleksi=lolos&page=${page}&limit=${limit}`)
       .then((response) => {
         setViewNilai(response.data.data)
         setLimit(response.data.limits)
@@ -613,14 +613,11 @@ export const Kelulusan = () => {
       .catch((error: any) => {
         alert(error)
       })
-
-
-  }, [searchValue, page, limit, viewNilai])
+  }, [searchValue, page, limit])
 
   const handleViewDetail = (id: string) => {
     axiosInstance.get(`/nilai/${id}`)
       .then((response) => {
-        console.log(response.data)
         setViewDetailNilai(response.data.data)
       })
       .catch((error: any) => {
@@ -670,13 +667,7 @@ export const Kelulusan = () => {
                       <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.siswa_id?.nama_lengkap}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.siswa_id?.nisn}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>
-                        {
-                          val.status == 0 ? (
-                            <span className="d-flex justify-content-center bg-warning" style={{ padding: "7px", fontSize: "10px", borderRadius: "8px" }}>BELUM LOLOS</span>
-                          ) : (
-                            <span className="d-flex justify-content-center" style={{ backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px" }}>LOLOS</span>
-                          )
-                        }
+                        <span className="d-flex justify-content-center" style={{ backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px", fontWeight: "bold" }}>{val.status}</span>
                       </td>
                       <td style={{ fontWeight: "normal" }} className="d-flex gap-3 justify-content-center">
                         <button type="button" style={{ fontSize: "10px", fontWeight: "bold" }} onClick={() => handleViewDetail(val.id)} data-bs-toggle="modal" data-bs-target="#viewdetailnilai" className="btn btn-secondary">
@@ -817,8 +808,8 @@ export const KelolaPengumuman = () => {
       <section>
         <div className="card">
           <div className="know content p-3">
-            <span style={{fontWeight: "bold"}}>Pengumuman saat ini :</span> 
-            <p style={{marginTop: "10px"}}>{website.pengumuman_umum}</p>
+            <span style={{ fontWeight: "bold" }}>Pengumuman saat ini :</span>
+            <p style={{ marginTop: "10px" }}>{website.pengumuman_umum}</p>
           </div>
           <div className="card-header">
             <span style={{ fontWeight: "bold" }}>
@@ -839,9 +830,9 @@ export const KelolaPengumuman = () => {
 
       <section className="mt-4">
         <div className="card">
-        <div className="know content p-3">
-            <span style={{fontWeight: "bold"}}>Pengumuman saat ini :</span> 
-            <p style={{marginTop: "10px"}}>{website.pengumuman_ujian}</p>
+          <div className="know content p-3">
+            <span style={{ fontWeight: "bold" }}>Pengumuman saat ini :</span>
+            <p style={{ marginTop: "10px" }}>{website.pengumuman_ujian}</p>
           </div>
           <div className="card-header">
             <span style={{ fontWeight: "bold" }}>
@@ -866,7 +857,6 @@ export const KelolaPengumuman = () => {
 export const KelolaUjian = () => {
   const [viewNilai, setViewNilai] = useState([])
   const [viewDetailNilai, setViewDetailNilai]: any = useState({})
-  const [selectedStatus, setSelectedStatus] = useState("false");
   const [selectedDate, setSelectedDate] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [limit, setLimit] = useState(5)
@@ -881,32 +871,38 @@ export const KelolaUjian = () => {
   const [viewSiswa, setViewSiswa] = useState([])
 
   useEffect(() => {
-    axiosInstance.get(`/nilai?kode_pendaftaran=${searchValue.slice(1)}&status_verifikasi=1&page=${page}&limit=${limit}&filterDate=${selectedDate}`)
+    axiosInstance
+      .get(
+        `/nilai?kode_pendaftaran=${searchValue.slice(1)}&page=${page}&limit=${limit}&filterDate=${selectedDate}`
+      )
       .then((response) => {
-        setViewNilai(response.data.data)
-        setLimit(response.data.limits)
-        setPage(response.data.pages)
-        setTotalPages(response.data.totalPages)
+        setViewNilai(response.data.data);
+        setLimit(response.data.limits);
+        setPage(response.data.pages);
+        setTotalPages(response.data.totalPages);
       })
-      .catch((error: any) => {
-        alert(error)
-      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, [searchValue, page, limit, selectedDate]);
 
-    axiosInstance.get(`/siswa?status=1&page=${page}&limit=${limit}`)
+  useEffect(() => {
+    axiosInstance
+      .get(`/siswa?status=1&page=${page}&limit=${limit}`)
       .then((response) => {
-        const filteredSiswa = response.data.data.filter((siswa: any) =>
-          !viewNilai.some((nilai: any) => nilai.siswa_id.id === siswa.id)
+        const filteredSiswa = response.data.data.filter(
+          (siswa: any) =>
+            !viewNilai.some((nilai: any) => nilai.siswa_id.id === siswa.id)
         );
         setViewSiswa(filteredSiswa);
-        setLimit(response.data.limits)
-        setPage(response.data.pages)
-        setTotalPages(response.data.totalPages)
+        setLimit(response.data.limits);
+        setPage(response.data.pages);
+        setTotalPages(response.data.totalPages);
       })
-      .catch((error: any) => {
-        alert(error)
-      })
-
-  }, [searchValue, page, limit, selectedDate, viewNilai, viewSiswa])
+      .catch((error) => {
+        alert(error);
+      });
+  }, [viewNilai, page, limit]);
 
   const handleViewDetail = (id: string) => {
     axiosInstance.get(`/nilai/${id}`)
@@ -930,7 +926,6 @@ export const KelolaUjian = () => {
   }
 
   const changeStatus = (id: string) => {
-    viewDetailNilai.status = Boolean(selectedStatus)
     axiosInstance.put(`/nilai/${id}`, viewDetailNilai)
       .then(() => {
         window.location.reload()
@@ -949,7 +944,6 @@ export const KelolaUjian = () => {
   }
 
   const handleSubmitNilai = () => {
-    console.log(payloadNilai)
     axiosInstance.post(`/nilai`, payloadNilai)
       .then(() => {
         setPayloadNilai({
@@ -957,6 +951,7 @@ export const KelolaUjian = () => {
           nilai_rapot: 0,
           nilai_ujian: 0
         })
+        window.location.reload()
       })
       .catch((error) => {
         console.error('Error add data:', error);
@@ -1005,13 +1000,15 @@ export const KelolaUjian = () => {
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>{val.nilai_rapot}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>{val.nilai_ujian}</td>
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>
-                        {
-                          val.status == 0 ? (
-                            <span className="d-flex justify-content-center bg-warning" style={{ padding: "7px", fontSize: "10px", borderRadius: "8px" }}>BELUM LOLOS</span>
-                          ) : (
-                            <span className="d-flex justify-content-center" style={{ backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px" }}>LOLOS</span>
-                          )
-                        }
+                        {val.status === 'menunggu' && (
+                          <span className="d-flex justify-content-center bg-warning" style={{ padding: "7px", fontSize: "10px", borderRadius: "8px", color: "white", fontWeight: "bold" }}>Menunggu</span>
+                        )}
+                        {val.status === 'lolos' && (
+                          <span className="d-flex justify-content-center bg-success" style={{ padding: "7px", fontSize: "10px", borderRadius: "8px", color: "white", fontWeight: "bold" }}>Lolos</span>
+                        )}
+                        {val.status === 'tidak lolos' && (
+                          <span className="d-flex justify-content-center bg-danger" style={{ padding: "7px", fontSize: "10px", borderRadius: "8px", color: "white", fontWeight: "bold" }}>Tidak Lolos</span>
+                        )}
                       </td>
                       <td style={{ fontWeight: "normal" }} className="d-flex gap-3 justify-content-center">
                         <button type="button" style={{ fontSize: "10px", fontWeight: "bold" }} onClick={() => handleViewDetail(val.id)} data-bs-toggle="modal" data-bs-target="#viewdetailnilai" className="btn btn-secondary">
@@ -1186,11 +1183,13 @@ export const KelolaUjian = () => {
                 <div className="col-4">
                   <select
                     value={viewDetailNilai.status}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="form-select" aria-label="Default select example">
-                    <option selected>Pilih Status</option>
-                    <option value="true">Lolos</option>
-                    <option value="false">Tidak Lolos</option>
+                    onChange={(e) => setViewDetailNilai({ ...viewDetailNilai, status: e.target.value })}
+                    className="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option value="menunggu" disabled>Menunggu</option>
+                    <option value="lolos">Lolos</option>
+                    <option value="tidak lolos">Tidak Lolos</option>
                   </select>
                 </div>
                 <button className="btn btn-primary d-flex align-items-center gap-2" style={{ fontSize: "12px" }} onClick={() => changeStatus(viewDetailNilai?.id)}>

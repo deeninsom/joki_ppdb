@@ -26,9 +26,6 @@ export default class Siswa {
   nisn: string;
 
   @Column({ nullable: true })
-  nik: number;
-
-  @Column({ nullable: true })
   tempat_lahir: string;
 
   @Column({ nullable: true })

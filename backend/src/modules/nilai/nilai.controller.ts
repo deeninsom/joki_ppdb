@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CreateNilaiDTO, UpdateNilaiDTO, QueryNilaiDto } from './nilai.dto';
+import { CreateNilaiDTO, UpdateNilaiDTO, QueryNilaiDto, PostId } from './nilai.dto';
 import { NilaiService } from './nilai.service';
 
 @ApiTags('nilai')
@@ -85,6 +85,24 @@ export class NilaiController {
             if (error instanceof HttpException) {
                 return res.status(error.getStatus()).json({ status: false, message: error.message });
             } else {
+                return res.status(500).json({ status: false, message: 'Terjadi kesalahan server !', error: error.message });
+            }
+        }
+    }
+
+    @Get('generate-pdf/:id')
+    async generatePdf (@Param('id') payload: string, @Res() res: Response){
+        try {
+            const data = await this.siswaService.generatepdf(payload);
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=HASIL SELEKSI.pdf');
+
+            res.send(data);
+        } catch (error) {
+            if (error instanceof HttpException) {
+                return res.status(error.getStatus()).json({ status: false, message: error.message });
+            } else {
+                console.log(error)
                 return res.status(500).json({ status: false, message: 'Terjadi kesalahan server !', error: error.message });
             }
         }

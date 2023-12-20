@@ -40,18 +40,18 @@ const Login = () => {
         }}>MTS ISLAM WALISONGO</span>
         <form>
           <div className="form-group my-3">
-            <label htmlFor="exampleInputText" className="my-2">NISN / Username</label>
+            <label htmlFor="exampleInputText" className="my-2">Username</label>
             <input
               value={payload.username}
               onChange={(e) => setPayload({ ...payload, username: e.target.value })}
-              type="text" className="form-control" id="exampleInputText" placeholder="" />
+              type="text" className="form-control" id="exampleInputText" placeholder="Masukan username" />
           </div>
           <div className="form-group my-3">
-            <label htmlFor="exampleInputPassword1" className="my-2">Password</label>
+            <label htmlFor="exampleInputPassword1" className="my-2">Password / NISN</label>
             <input
               value={payload.password}
               onChange={(e) => setPayload({ ...payload, password: e.target.value })}
-              type="password" className="form-control" id="exampleInputPassword1" placeholder="" />
+              type="password" className="form-control" id="exampleInputPassword1" placeholder="Masukan nisn" />
           </div>
         </form>
         <button type="submit" className="btn btn-primary" onClick={handleLogin}>Masuk</button>

@@ -9,6 +9,12 @@ import {
 } from 'typeorm';
 import Siswa from '../siswa/siswa.entity';
 
+export enum Status {
+  menunggu = 'menunggu',
+  lolos = 'lolos',
+  tidak_lolos = 'tidak lolos'
+}
+
 @Entity()
 export default class Nilai {
   @PrimaryGeneratedColumn('uuid')
@@ -20,8 +26,8 @@ export default class Nilai {
   @Column({ type: 'float', nullable: true })
   nilai_ujian: number;
 
-  @Column({ default: false })
-  status: boolean;
+  @Column({default: Status.menunggu })
+  status: Status;
 
   @ManyToOne(() => Siswa, (siswa) => siswa.id)
   @JoinColumn({ name: 'siswa_id' })

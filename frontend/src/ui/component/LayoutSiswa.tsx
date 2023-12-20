@@ -9,12 +9,12 @@ export const LayoutSiswa = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate()
   const [user, setUser]: any = useState({})
 
-  
+
   const { logout } = useLogout()
   const handleLogout = () => {
     logout()
   }
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -30,10 +30,10 @@ export const LayoutSiswa = ({ children }: { children: ReactNode }) => {
         alert(error.response.data.message);
       }
     };
-    
+
     fetchUserData();
   }, []);
-  
+
   const handlePage = (route: string) => {
     navigate(route)
   }
@@ -71,38 +71,38 @@ export const LayoutSiswa = ({ children }: { children: ReactNode }) => {
                   </div>
                 </div>
               </div>
-                  <div  className="content-menu mt-4">
-                    <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>UTAMA</span>
-                    <ul style={{ listStyle: "none", marginLeft: "-20px" }}>
-                      <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
-                        <i className="fa fa-solid fa-house"></i>
-                        <span>HOME</span>
-                      </li>
-                      <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/biodata/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
-                        <i className="ms-1 fa fa-solid fa-file"></i>
-                        <span style={{ marginLeft: "2px" }}>BIODATA</span>
-                      </li>
-                      <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/pengumuman/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
-                        <i className="fa fa-solid fa-volume-high"></i>
-                        <span style={{ marginLeft: "-2px" }}>PENGUMUMAN</span>
-                      </li>
-                      <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/pengumuman-ujian/${user.user_id.id}`)}  style={{ cursor: "pointer" }}>
-                        <i className="fa fa-solid fa-clipboard-list ms-1"></i>
-                        <span style={{ marginLeft: "2px" }}>Ujian</span>
-                      </li>
-                      <li className="my-3 d-flex align-items-center gap-3" style={{ cursor: "pointer" }}  onClick={() => handlePage(`/siswa-panel/print-seleksi/${user.user_id.id}`)} >
-                        <i className="fa fa-solid fa-print" style={{ marginLeft: "2px" }} ></i>
-                        <span style={{ marginLeft: "1px" }}>PRINT HASIL SELEKSI</span>
-                      </li>
-                    </ul>
-                    <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>LAINYA</span>
-                    <ul style={{ listStyle: "none", marginLeft: "-20px" }}>
-                      <li className="my-3 d-flex align-items-center gap-3" onClick={handleLogout} style={{ cursor: "pointer" }}>
-                        <i style={{ marginLeft: "4px" }} className="fa fa-solid fa-right-from-bracket"></i>
-                        <span>KELUAR</span>
-                      </li>
-                    </ul>
-                  </div>
+              <div className="content-menu mt-4">
+                <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>UTAMA</span>
+                <ul style={{ listStyle: "none", marginLeft: "-20px" }}>
+                  <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
+                    <i className="fa fa-solid fa-house"></i>
+                    <span>HOME</span>
+                  </li>
+                  <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/biodata/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
+                    <i className="ms-1 fa fa-solid fa-file"></i>
+                    <span style={{ marginLeft: "2px" }}>BIODATA</span>
+                  </li>
+                  <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/pengumuman/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
+                    <i className="fa fa-solid fa-volume-high"></i>
+                    <span style={{ marginLeft: "-2px" }}>PENGUMUMAN</span>
+                  </li>
+                  <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage(`/siswa-panel/pengumuman-ujian/${user.user_id.id}`)} style={{ cursor: "pointer" }}>
+                    <i className="fa fa-solid fa-volume-high"></i>
+                    <span>Ujian</span>
+                  </li>
+                  <li className="my-3 d-flex align-items-center gap-3" style={{ cursor: "pointer" }} onClick={() => handlePage(`/siswa-panel/print-seleksi/${user.user_id.id}`)} >
+                    <i className="fa fa-solid fa-print" style={{ marginLeft: "2px" }} ></i>
+                    <span style={{ marginLeft: "2px" }}>PRINT HASIL SELEKSI</span>
+                  </li>
+                </ul>
+                <span style={{ fontSize: "13px", fontWeight: "bolder", color: "GrayText" }}>LAINYA</span>
+                <ul style={{ listStyle: "none", marginLeft: "-20px" }}>
+                  <li className="my-3 d-flex align-items-center gap-3" onClick={handleLogout} style={{ cursor: "pointer" }}>
+                    <i style={{ marginLeft: "4px" }} className="fa fa-solid fa-right-from-bracket"></i>
+                    <span>KELUAR</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <div className="col-md-8 ms-3">

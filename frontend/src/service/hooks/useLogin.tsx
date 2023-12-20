@@ -23,8 +23,8 @@ export const useLogin = () => {
         dispatch({ type: 'LOGIN', payload: response })
         setIsloading(false)
         if (response.data.data.role !== 'admin') {
-          const siswaId = await axiosInstance.get(`/siswa?user_id=${response.data.data.id}&&page=1&&limit=1`)
-          navigate(`/siswa-panel/${siswaId.data.data[0].id}`)
+          const siswaId = await axiosInstance.get(`/siswa?user_id=${response.data.data.id}&page=1&limit=1`)
+          navigate(`/siswa-panel/${siswaId.data.data[0].user_id.id}`)
         } else {
           navigate('/admin-panel')
         }

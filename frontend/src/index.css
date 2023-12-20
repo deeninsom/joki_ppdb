@@ -1,0 +1,25 @@
+
+.border-header {
+  border-top: 3px rgb(3, 3, 3) solid;
+  height: 10px;
+  width: 100%;
+  display: inline-block;
+}
+
+.border-header-2 {
+  border-top: 5px rgb(3, 3, 3) solid;
+  height: 10px;
+  width: 100%;
+  display: inline-block;
+}
+
+.ttd{
+  right: 0%;
+  position: absolute;
+  margin-top: 5%;
+  margin-right: 10%;
+}
+
+.ttd p {
+  font-size: 15px;
+}
