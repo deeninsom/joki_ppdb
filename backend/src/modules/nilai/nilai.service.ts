@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import Nilai from './nilai.entity';
 import puppeteer from 'puppeteer';
+import { Workbook } from 'exceljs';
 
 @Injectable()
 export class NilaiService {
@@ -271,4 +272,32 @@ export class NilaiService {
         return pdfBuffer;
     }
 
+    async generateExcel(){
+      const nilai = await this.nilaiRepository.find({
+        relations: ["siswa_id"]
+      })
+
+      const workbook = new  Workbook
+      const worksheet = workbook.addWorksheet('Hasil Seleksi')
+
+      worksheet.columns = [
+        { header: 'Nama', key: 'nama_lengkap', width: 20 },
+        { header: 'NISN', key: 'nisn', width: 15 },
+        { header: 'Nilai Rapot', key: 'nilai_rapot', width: 15 },
+        { header: 'Nilai Ujian', key: 'nilai_ujian', width: 15 },
+        { header: 'Status', key: 'status', width: 15 },
+      ];
+      
+      nilai.forEach((val: any)=>{
+        const rowData = {
+          nama_lengkap: val.siswa_id?.nama_lengkap,
+          nisn: val.siswa_id?.nisn,
+          nilai_rapot: val.nilai_rapot,
+          nilai_ujian: val.nilai_ujian,
+          status: val.status,
+        };
+        worksheet.addRow(rowData)
+      })
+      return workbook.xlsx.writeBuffer();
+    }
 }

@@ -551,7 +551,7 @@ export const Verifikasi = () => {
                 <div className="col-4">
                   <select
                     value={viewDetailSiswa.status}
-                    onChange={(e: any) => setViewDetailSiswa({...viewDetailSiswa, status: e.target.value})}
+                    onChange={(e: any) => setViewDetailSiswa({ ...viewDetailSiswa, status: e.target.value })}
                     className="form-select" aria-label="Default select example">
                     <option selected>Pilih Status</option>
                     <option value="lolos">Diterima</option>
@@ -874,7 +874,6 @@ export const KelolaUjian = () => {
     axiosInstance
       .get(`/siswa?status=lolos&page=${page}&limit=${limit}`)
       .then((response) => {
-        console.log(response.data)
         const filteredSiswa = response.data.data.filter(
           (siswa: any) =>
             !viewNilai.some((nilai: any) => nilai.siswa_id.id === siswa.id)
@@ -943,6 +942,30 @@ export const KelolaUjian = () => {
       });
   }
 
+  const handleExportExcel = async () => {
+    try {
+      const response = await axiosInstance.get('nilai/generate-excel', { responseType: 'blob' });
+  
+      // Create a blob from the response data
+      const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  
+      // Create a download link
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'HASIL_SELEKSI.xlsx';
+  
+      // Append the link to the document and trigger the click event to start the download
+      document.body.appendChild(link);
+      link.click();
+  
+      // Remove the link from the document
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error exporting Excel:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+  
   return (
     <LayoutAdmin>
       <section>
@@ -958,7 +981,16 @@ export const KelolaUjian = () => {
               <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
               <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Cari kode pendaftaran" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} name="search" />
             </div>
-            <button className="btn btn-primary me-4" style={{ fontSize: "10px" }} data-bs-toggle="modal" data-bs-target="#inputnilai"><i className="fa fa-solid fa-plus"></i></button>
+            <div className="button-action d-flex">
+              <button className="btn btn-success me-2 d-flex align-items-center" style={{ fontSize: "10px" }} onClick={handleExportExcel}>
+                <i className="fa fa-solid fa-file-excel me-2"></i>
+                <span>Export</span>
+              </button>
+              <button className="btn btn-primary me-4" style={{ fontSize: "10px" }} data-bs-toggle="modal" data-bs-target="#inputnilai">
+                <i className="fa fa-solid fa-plus"></i>
+                <span>Tambah</span>
+              </button>
+            </div>
           </div>
           <div className="card-body">
             <table className="table table-bordered">

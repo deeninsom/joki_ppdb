@@ -32,6 +32,24 @@ export class NilaiController {
         }
     }
 
+    @Get('generate-excel')
+    async generateExcel ( @Res() res: Response){
+        try {
+            const data = await this.siswaService.generateExcel();
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            res.setHeader('Content-Disposition', 'attachment; filename=HASIL SELEKSI.xlsx');
+
+            res.send(data);
+        } catch (error) {
+            if (error instanceof HttpException) {
+                return res.status(error.getStatus()).json({ status: false, message: error.message });
+            } else {
+                console.log(error)
+                return res.status(500).json({ status: false, message: 'Terjadi kesalahan server !', error: error.message });
+            }
+        }
+    }
+    
     @Get(':id')
     async getId(@Param('id') id: string, @Res() res: Response) {
         try {
@@ -107,4 +125,6 @@ export class NilaiController {
             }
         }
     }
+
+
 }
