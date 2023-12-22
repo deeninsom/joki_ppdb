@@ -138,8 +138,8 @@ const LandingPage = () => {
               <span>Ds. Teben Kemuning, Kamoning, Sampang</span>
             </p>
             <div style={{ fontSize: "15px", textAlign: "center", fontFamily: "monospace" }}>
-              <span style={{ display: "block" }}><i className="fa fa-solid fa-phone me-2"></i>08xxx-xxx-xxx</span>
-              <span><i className="fa fa-solid fa-envelope me-2"></i>xx@gmail.com</span>
+              <span style={{ display: "block" }}><i className="fa fa-solid fa-phone me-2"></i>+62 878-6559-2040</span>
+              <span><i className="fa fa-solid fa-envelope me-2"></i>smpwalisongo@gmail.com</span>
             </div>
           </div>
         </div>
