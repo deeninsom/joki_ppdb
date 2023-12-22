@@ -113,7 +113,8 @@ export class NilaiController {
         try {
             const data = await this.siswaService.generatepdf(payload);
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename=HASIL SELEKSI.pdf');
+            // res.setHeader('Content-Disposition', 'attachment; filename=HASIL SELEKSI.pdf');
+            res.setHeader('Content-Disposition', 'inline; filename=HASIL SELEKSI.pdf');
 
             res.send(data);
         } catch (error) {

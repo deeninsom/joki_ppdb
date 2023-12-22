@@ -755,15 +755,44 @@ export const KelolaPengumuman = () => {
         alert(error)
       })
   }, [])
+
   const handleUpdatePengumumanUmum = () => {
     const parseText: any = parse(pengumumanUmum)
     const resultText = parseText.props.children
+    // const dataText = {
+    //   text: '',
+    //   href: ''
+    // }
+
+    // if(parseText.length > 0){
+    //   parseText.map((val: any)=>{
+    //     // console.log('halo')
+        
+    //     if(val.props.children === ''){
+    //       console.log(val.props.children)
+    //     }
+    //     // if(parseText.props.children.type === 'a'){
+    //     //   dataText.href = val.props.children.props.children
+    //     // }else{
+    //     //   dataText.text = val.props.children
+    //     // }
+    //   })
+    // }else {
+    //   console.log('hai')
+    //   if(parseText.props.children.type === 'a'){
+    //     dataText.href = parseText.props.children.props.children
+    //   }else{
+    //     dataText.text = parseText.props.children
+    //   }
+    // }
+
+    // console.log(dataText)
 
     axiosInstance.put('/websites/1', {
       pengumuman_umum: resultText
     })
       .then((response) => {
-        window.location.reload()
+        // window.location.reload()
         setPengumumanUmum(response.data.data.pengumuman_umum);
       })
       .catch((error) => {
@@ -946,23 +975,19 @@ export const KelolaUjian = () => {
     try {
       const response = await axiosInstance.get('nilai/generate-excel', { responseType: 'blob' });
   
-      // Create a blob from the response data
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   
-      // Create a download link
+
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = 'HASIL_SELEKSI.xlsx';
   
-      // Append the link to the document and trigger the click event to start the download
       document.body.appendChild(link);
       link.click();
   
-      // Remove the link from the document
       document.body.removeChild(link);
     } catch (error) {
       console.error('Error exporting Excel:', error);
-      // Handle error, e.g., show an error message to the user
     }
   };
   

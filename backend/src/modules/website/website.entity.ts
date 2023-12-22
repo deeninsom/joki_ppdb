@@ -14,10 +14,10 @@ export default class Websites {
   @Column({ type: 'boolean', default: false })
   status_pendaftaran: boolean;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'json', nullable: true })
   pengumuman_umum: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'json', nullable: true })
   pengumuman_ujian: string;
 
   @CreateDateColumn()
