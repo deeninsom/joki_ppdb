@@ -7,117 +7,118 @@ import { Workbook } from 'exceljs';
 
 @Injectable()
 export class NilaiService {
-    constructor(
+  constructor(
 
-        @InjectRepository(Nilai)
-        private nilaiRepository: Repository<Nilai>,
+    @InjectRepository(Nilai)
+    private nilaiRepository: Repository<Nilai>,
 
-    ) { }
+  ) { }
 
-    async get(siswa_id: string, status_seleksi: any, status_verifikasi: any, date: any, kode_pendaftaran: string, pages: number, limits: number) {
+  async get(siswa_id: string, status_seleksi: any, status_verifikasi: any, date: any, kode_pendaftaran: string, pages: number, limits: number) {
 
-        let queryBuilder = this.nilaiRepository.createQueryBuilder('nilai')
+    let queryBuilder = this.nilaiRepository.createQueryBuilder('nilai')
 
-        if (siswa_id) {
-            queryBuilder = queryBuilder.where('nilai.siswa_id LIKE :siswa_id', { siswa_id: `%${siswa_id}%` });
-        }
-
-        if (status_seleksi) {
-            queryBuilder = queryBuilder.where('nilai.status LIKE :status', { status: `${status_seleksi}` });
-        }
-
-        if (status_verifikasi) {
-            queryBuilder = queryBuilder.where('siswa.status LIKE :status', { status: `%${status_verifikasi}%` });
-        }
-
-        if (date) {
-            queryBuilder = queryBuilder.where('nilai.created_at LIKE :date', { date: `%${date}%` });
-        }
-
-        if (kode_pendaftaran) {
-            queryBuilder = queryBuilder.where('siswa.kode_pendaftaran LIKE :kode_pendaftaran', { kode_pendaftaran: `%${kode_pendaftaran}%` });
-        }
-
-        if (pages <= 0) {
-            pages = 1;
-        }
-
-        const [data, totalData] = await queryBuilder
-            .leftJoinAndSelect('nilai.siswa_id', 'siswa')
-            .skip((pages - 1) * limits)
-            .take(limits)
-            .orderBy('nilai.created_at', 'ASC')
-            .getManyAndCount();
-
-        const totalPages = Math.ceil(totalData / limits);
-
-        return {
-            data: data || [],
-            totalData,
-            pages,
-            limits,
-            totalPages,
-        };
+    if (siswa_id) {
+      queryBuilder = queryBuilder.where('nilai.siswa_id LIKE :siswa_id', { siswa_id: `%${siswa_id}%` });
     }
 
-    async getId(id: string): Promise<any> {
-        const findNilai = await this.nilaiRepository.findOne({
-            where: { id },
-            relations: ['siswa_id'],
-        });
-        if (!findNilai) throw new HttpException(`Nilai dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
-        return findNilai
+    if (status_seleksi) {
+      queryBuilder = queryBuilder.where('nilai.status LIKE :status', { status: `${status_seleksi}` });
     }
 
-    async create(nilaiDTO: any): Promise<any> {
-        const createSiswa = await this.nilaiRepository.save(nilaiDTO);
-        return createSiswa
+    if (status_verifikasi) {
+      queryBuilder = queryBuilder.where('siswa.status LIKE :status', { status: `%${status_verifikasi}%` });
     }
 
-    async update(id: string, payload: any): Promise<any> {
-        const findNilai = await this.getId(id)
-
-        if (!findNilai) throw new HttpException(`Nilai dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
-
-        await this.nilaiRepository.update(findNilai.id, payload)
-        return await this.nilaiRepository.findOne({ where: { id: findNilai.id } })
+    if (date) {
+      queryBuilder = queryBuilder.where('nilai.created_at LIKE :date', { date: `%${date}%` });
     }
 
-    async delete(id: string): Promise<void> {
-        const findNilai = await this.getId(id)
-        await this.nilaiRepository.delete(findNilai.id)
+    if (kode_pendaftaran) {
+      queryBuilder = queryBuilder.where('siswa.kode_pendaftaran LIKE :kode_pendaftaran', { kode_pendaftaran: `%${kode_pendaftaran}%` });
     }
 
-    async generatepdf(id: string) {
+    if (pages <= 0) {
+      pages = 1;
+    }
 
-        const findNilai: any = await this.nilaiRepository.findOne({
-            where: {
-                siswa_id: Like(`${id}`)
-            },
-            relations: ["siswa_id"]
-        })
+    const [data, totalData] = await queryBuilder
+      .leftJoinAndSelect('nilai.siswa_id', 'siswa')
+      .skip((pages - 1) * limits)
+      .take(limits)
+      .orderBy('nilai.created_at', 'ASC')
+      .getManyAndCount();
 
-        const customData = {
-            nilai_ujian: findNilai?.nilai_ujian,
-            siswa_id: {
-                id: findNilai.siswa_id?.id || '',
-                nama_lengkap: findNilai.siswa_id?.nama_lengkap || '',
-                ttl: `${findNilai?.siswa_id?.tempat_lahir}, ${findNilai?.siswa_id?.tanggal_lahir}` || '',
-                nisn: findNilai.siswa_id?.nisn || '',
-                kode_pendaftaran: findNilai.siswa_id?.kode_pendaftaran || '',
-                data_wali: {
-                    nama_wali: findNilai.siswa_id.data_wali[0].nama_wali || ''
-                }
-            }
-        };
+    const totalPages = Math.ceil(totalData / limits);
 
-        const currentDate = new Date().toLocaleDateString("id-ID", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-        });
-        const htmlContent = 
-        `<!DOCTYPE html>
+    return {
+      data: data || [],
+      totalData,
+      pages,
+      limits,
+      totalPages,
+    };
+  }
+
+  async getId(id: string): Promise<any> {
+    const findNilai = await this.nilaiRepository.findOne({
+      where: { id },
+      relations: ['siswa_id'],
+    });
+    if (!findNilai) throw new HttpException(`Nilai dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
+    return findNilai
+  }
+
+  async create(nilaiDTO: any): Promise<any> {
+    const createSiswa = await this.nilaiRepository.save(nilaiDTO);
+    return createSiswa
+  }
+
+  async update(id: string, payload: any): Promise<any> {
+    const findNilai = await this.getId(id)
+
+    if (!findNilai) throw new HttpException(`Nilai dengan id ${id} tidak ditemukan !`, HttpStatus.NOT_FOUND)
+
+    await this.nilaiRepository.update(findNilai.id, payload)
+    return await this.nilaiRepository.findOne({ where: { id: findNilai.id } })
+  }
+
+  async delete(id: string): Promise<void> {
+    const findNilai = await this.getId(id)
+    await this.nilaiRepository.delete(findNilai.id)
+  }
+
+  async generatepdf(id: string) {
+
+    const findNilai: any = await this.nilaiRepository.findOne({
+      where: {
+        siswa_id: Like(`${id}`)
+      },
+      relations: ["siswa_id"]
+    })
+
+
+    const customData = {
+      nilai_ujian: findNilai?.nilai_ujian,
+      siswa_id: {
+        id: findNilai.siswa_id?.id || '',
+        nama_lengkap: findNilai.siswa_id?.nama_lengkap || '',
+        ttl: `${findNilai?.siswa_id?.tempat_lahir}, ${findNilai?.siswa_id?.tanggal_lahir}` || '',
+        nisn: findNilai.siswa_id?.nisn || '',
+        kode_pendaftaran: findNilai.siswa_id?.kode_pendaftaran || '',
+        data_wali: {
+          nama_wali: findNilai?.siswa_id?.data_wali.map((val: any) => val.nama_wali).join(', ') || ''
+        }
+      }
+    };
+
+    const currentDate = new Date().toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    const htmlContent =
+      `<!DOCTYPE html>
         <html lang="en">
         
         <head>
@@ -223,7 +224,7 @@ export class NilaiService {
                 <li class="d-flex my-2">
                   <div style="width: 30%;">NAMA ORANG TUA</div>
                   <div>:</div>
-                  <div class="ms-2">${customData.siswa_id.data_wali?.nama_wali}</div>
+                  <div class="ms-2">${customData.siswa_id.data_wali.nama_wali}</div>
                 </li>
                 <li class="d-flex my-2">
                   <div style="width: 30%;">No. Peserta UM</div>
@@ -264,45 +265,45 @@ export class NilaiService {
         </body>
         
         </html>`
-        
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
 
-        await page.setContent(htmlContent);
-        // await page.waitForTimeout(2000);
-        const pdfBuffer = await page.pdf();
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
 
-        await browser.close();
+    await page.setContent(htmlContent);
+    // await page.waitForTimeout(2000);
+    const pdfBuffer = await page.pdf();
 
-        return pdfBuffer;
-    }
+    await browser.close();
 
-    async generateExcel(){
-      const nilai = await this.nilaiRepository.find({
-        relations: ["siswa_id"]
-      })
+    return pdfBuffer;
+  }
 
-      const workbook = new  Workbook
-      const worksheet = workbook.addWorksheet('Hasil Seleksi')
+  async generateExcel() {
+    const nilai = await this.nilaiRepository.find({
+      relations: ["siswa_id"]
+    })
 
-      worksheet.columns = [
-        { header: 'Nama', key: 'nama_lengkap', width: 20 },
-        { header: 'NISN', key: 'nisn', width: 15 },
-        { header: 'Nilai Rapot', key: 'nilai_rapot', width: 15 },
-        { header: 'Nilai Ujian', key: 'nilai_ujian', width: 15 },
-        { header: 'Status', key: 'status', width: 15 },
-      ];
-      
-      nilai.forEach((val: any)=>{
-        const rowData = {
-          nama_lengkap: val.siswa_id?.nama_lengkap,
-          nisn: val.siswa_id?.nisn,
-          nilai_rapot: val.nilai_rapot,
-          nilai_ujian: val.nilai_ujian,
-          status: val.status,
-        };
-        worksheet.addRow(rowData)
-      })
-      return workbook.xlsx.writeBuffer();
-    }
+    const workbook = new Workbook
+    const worksheet = workbook.addWorksheet('Hasil Seleksi')
+
+    worksheet.columns = [
+      { header: 'Nama', key: 'nama_lengkap', width: 20 },
+      { header: 'NISN', key: 'nisn', width: 15 },
+      { header: 'Nilai Rapot', key: 'nilai_rapot', width: 15 },
+      { header: 'Nilai Ujian', key: 'nilai_ujian', width: 15 },
+      { header: 'Status', key: 'status', width: 15 },
+    ];
+
+    nilai.forEach((val: any) => {
+      const rowData = {
+        nama_lengkap: val.siswa_id?.nama_lengkap,
+        nisn: val.siswa_id?.nisn,
+        nilai_rapot: val.nilai_rapot,
+        nilai_ujian: val.nilai_ujian,
+        status: val.status,
+      };
+      worksheet.addRow(rowData)
+    })
+    return workbook.xlsx.writeBuffer();
+  }
 }
