@@ -332,61 +332,85 @@ export const Verifikasi = () => {
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Data Alamat</div>
                 </li>
-                <ul>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Alamat</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.alamat}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Desa</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.desa}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Kecamatan</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.kecamatan}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Kabupaten</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.kabupaten}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Jarak Sekolah</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.jarak_sekolah}</div>
-                  </li>
-                </ul>
+                {
+                  viewDetailSiswa.data_alamat && viewDetailSiswa.data_alamat.map((val: any, index: any) => (
+                    <ul key={index}>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Alamat</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.alamat}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Desa</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.desa}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Kecamatan</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.kecamatan}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Kabupaten</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.kabupaten}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Jarak Sekolah</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.jarak_sekolah}</div>
+                      </li>
+                    </ul>
+                  ))
+                }
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Data Wali</div>
                 </li>
-                <ul>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Nama Wali</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.nama_wali}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>NO. Handphone</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.no_handphone}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Alamat</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.alamat}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Jenis Pekerjaan</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.jenis_pekerjaan}</div>
-                  </li>
-                </ul>
+                {
+                  viewDetailSiswa.data_alamat && viewDetailSiswa.data_wali.map((val: any, index: any) => (
+                    <ul key={index}>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Nama Wali</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.nama_wali}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>NO. Handphone</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.no_handphone}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Alamat</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.alamat}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Jenis Pekerjaan</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.jenis_pekerjaan}</div>
+                      </li>
+                    </ul>
+                  ))
+                }
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Data Sekolah</div>
                 </li>
+                {
+                  viewDetailSiswa.data_sekolah && viewDetailSiswa.data_sekolah.map((val: any, index: any) => (
+                    <ul key={index}>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Nama Sekolah</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.nama_sekolah}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Jenjang Sekolah</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.jenjang_sekolah}</div>
+                      </li>
+                    </ul>
+                  ))
+                }
                 <ul>
                   <li className="d-flex my-2">
                     <div style={{ width: "40%" }}>Nama Sekolah</div>
@@ -471,78 +495,90 @@ export const Verifikasi = () => {
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Data Alamat</div>
                 </li>
-                <ul>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Alamat</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.alamat}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Desa</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.desa}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Kecamatan</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.kecamatan}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Kabupaten</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.kabupaten}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Jarak Sekolah</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_alamat?.jarak_sekolah}</div>
-                  </li>
-                </ul>
+                {
+                  viewDetailSiswa.data_alamat && viewDetailSiswa.data_alamat.map((val: any, index: any) => (
+                    <ul key={index}>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Alamat</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.alamat}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Desa</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.desa}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Kecamatan</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.kecamatan}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Kabupaten</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.kabupaten}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Jarak Sekolah</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.jarak_sekolah}</div>
+                      </li>
+                    </ul>
+                  ))
+                }
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Data Wali</div>
                 </li>
-                <ul>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Nama Wali</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.nama_wali}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>NO. Handphone</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.no_handphone}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Alamat</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.alamat}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Jenis Pekerjaan</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_wali?.jenis_pekerjaan}</div>
-                  </li>
-                </ul>
+                {
+                  viewDetailSiswa.data_alamat && viewDetailSiswa.data_wali.map((val: any, index: any) => (
+                    <ul key={index}>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Nama Wali</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.nama_wali}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>NO. Handphone</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.no_handphone}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Alamat</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.alamat}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Jenis Pekerjaan</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.jenis_pekerjaan}</div>
+                      </li>
+                    </ul>
+                  ))
+                }
                 <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Data Sekolah</div>
                 </li>
-                <ul>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Nama Sekolah</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_sekolah?.nama_sekolah}</div>
-                  </li>
-                  <li className="d-flex my-2">
-                    <div style={{ width: "40%" }}>Jenjang Sekolah</div>
-                    <div>:</div>
-                    <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailSiswa.data_sekolah?.jenjang_sekolah}</div>
-                  </li>
-                </ul>
+                {
+                  viewDetailSiswa.data_sekolah && viewDetailSiswa.data_sekolah.map((val: any, index: any) => (
+                    <ul key={index}>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Nama Sekolah</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.nama_sekolah}</div>
+                      </li>
+                      <li className="d-flex my-2">
+                        <div style={{ width: "40%" }}>Jenjang Sekolah</div>
+                        <div>:</div>
+                        <div className="ms-2" style={{ fontWeight: "bold" }}>{val.jenjang_sekolah}</div>
+                      </li>
+                    </ul>
+                  ))
+                }
                 <li className="d-flex my-2 align-items-center">
                   <div style={{ width: "40%" }}>Status</div>
                   <div>:</div>
                   <div className="ms-2" style={{ fontWeight: "bold" }}>{
-                    viewDetailSiswa.status == 0 ? 'Belum Diverifikasi' : 'Sudah Diverifikasi'
+                    viewDetailSiswa.status === 'lolos' ? 'Sudah Diverifikasi' : 'Belum Diverifikasi'
                   }</div>
                 </li>
               </ul>
@@ -767,7 +803,7 @@ export const KelolaPengumuman = () => {
     // if(parseText.length > 0){
     //   parseText.map((val: any)=>{
     //     // console.log('halo')
-        
+
     //     if(val.props.children === ''){
     //       console.log(val.props.children)
     //     }
@@ -974,23 +1010,23 @@ export const KelolaUjian = () => {
   const handleExportExcel = async () => {
     try {
       const response = await axiosInstance.get('nilai/generate-excel', { responseType: 'blob' });
-  
+
       const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  
+
 
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = 'HASIL_SELEKSI.xlsx';
-  
+
       document.body.appendChild(link);
       link.click();
-  
+
       document.body.removeChild(link);
     } catch (error) {
       console.error('Error exporting Excel:', error);
     }
   };
-  
+
   return (
     <LayoutAdmin>
       <section>

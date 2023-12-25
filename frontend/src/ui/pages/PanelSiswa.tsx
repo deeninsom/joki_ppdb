@@ -263,7 +263,7 @@ export const Biodata = () => {
                 <hr />
                 <span style={{ fontSize: "12px", fontWeight: "bold" }}>No. Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.kode_pendaftaran}</span></span>
                 <hr />
-                <span style={{ fontSize: "12px", fontWeight: "bold" }}>Status Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.status === 'lolos' ? 'Belum Disetujui' : 'Disetujui'}</span></span>
+                <span style={{ fontSize: "12px", fontWeight: "bold" }}>Status Pendaftaran : <span style={{ fontSize: "12px", fontWeight: "bold", color: 'GrayText', display: "block" }}>{user.status === 'lolos' ? 'Disetujui' : 'Belum Disetujui'}</span></span>
               </div>
               {
                 !input ? (
