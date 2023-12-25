@@ -79,6 +79,7 @@ export const Biodata = () => {
   }, [id]);
 
   const changeBiodata = async () => {
+    console.log(user)
     try {
       await axiosInstance.put(`/siswa/${user.id}`, user);
       setInput(false)
@@ -91,17 +92,19 @@ export const Biodata = () => {
     if (fieldName !== '') {
       setUser((prevUser: any) => ({
         ...prevUser,
-        [section]: [
-          {
-            ...prevUser[section][0],
-            [fieldName]: value,
-          },
-        ],
+        [section]: {
+          ...prevUser[section],
+          [fieldName]: value,
+        },
       }));
     } else {
-      setUser((prevUser: any) => ({ ...prevUser, [section]: [{ ...prevUser[section][0], [fieldName]: value }] }));
+      setUser((prevUser: any) => ({
+        ...prevUser,
+        [section]: value,
+      }));
     }
   };
+  
 
   const [selectedFile, setSelectedFile] = useState(null);
 

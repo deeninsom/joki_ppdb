@@ -73,13 +73,13 @@ export class CreateSiswaDTO {
     @ApiProperty()
     nilai_rapot: string;
 
-    @ApiProperty({ type: [AlamatDTO] })
+    @ApiProperty({ type: AlamatDTO })
     data_alamat: JSON;
 
-    @ApiProperty({ type: [WaliDTO] })
+    @ApiProperty({ type: WaliDTO })
     data_wali: JSON;
 
-    @ApiProperty({ type: [SekolahDTO] })
+    @ApiProperty({ type: SekolahDTO })
     data_sekolah: JSON;
 
 }
@@ -125,15 +125,15 @@ export class UpdateSiswaDTO {
     @IsOptional()
     nilai_raport?: string;
 
-    @ApiProperty({ type: [AlamatDTO] })
+    @ApiProperty({ type: AlamatDTO})
     @IsOptional()
     data_alamat?: JSON;
 
-    @ApiProperty({ type: [WaliDTO] })
+    @ApiProperty({ type: WaliDTO })
     @IsOptional()
     data_wali?: JSON;
 
-    @ApiProperty({ type: [SekolahDTO] })
+    @ApiProperty({ type: SekolahDTO })
     @IsOptional()
     data_sekolah?: JSON;
 
