@@ -67,7 +67,6 @@ export const Biodata = () => {
       try {
         const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
         setUser(response.data.data[0])
-        console.log(response.data.data[0].data_sekolah[0].nama_sekolah)
         if (response.data.data[0].file_rapot === null || response.data.data[0].file_rapot === undefined) {
           setNotif(true)
         }
@@ -304,48 +303,48 @@ export const Biodata = () => {
                         <td className="p-3" style={{ width: "10%" }}>Alamat</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'alamat', e.target.value)} 
-                          value={user.data_alamat && user.data_alamat.length > 0 ? user.data_alamat[0].alamat : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'alamat', e.target.value)}
+                            value={user.data_alamat?.alamat} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>Desa</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'desa', e.target.value)} 
-                          value={user.data_alamat && user.data_alamat.length > 0 ? user.data_alamat[0].desa : ''}style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'desa', e.target.value)}
+                            value={user.data_alamat?.desa} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>Kecamatan</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'kecamatan', e.target.value)} 
-                          value={user.data_alamat && user.data_alamat.length > 0 ? user.data_alamat[0].kecamatan : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'kecamatan', e.target.value)}
+                            value={user.data_alamat?.kecamatan} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>Kabupaten</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'kabupaten', e.target.value)} 
-                          value={user.data_alamat && user.data_alamat.length > 0 ? user.data_alamat[0].kabupaten : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'kabupaten', e.target.value)}
+                            value={user.data_alamat?.kabupaten} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>Provinsi</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'provinsi', e.target.value)} 
-                          value={user.data_alamat && user.data_alamat.length > 0 ? user.data_alamat[0].provinsi : ''}style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'provinsi', e.target.value)}
+                            value={user.data_alamat?.provinsi} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>Jarak ke sekolah</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'jarak_sekolah', e.target.value)} 
-                          value={user.data_alamat && user.data_alamat.length > 0 ? user.data_alamat[0].jarak_sekolah : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_alamat', 'jarak_sekolah', e.target.value)}
+                            value={user.data_alamat?.jarak_sekolah} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                     </tbody>
@@ -365,8 +364,8 @@ export const Biodata = () => {
                         <td className="p-3" style={{ width: "10%" }}>Nama Orang Tua / Wali </td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'nama_wali', e.target.value)}                      
-                          value={user.data_wali && user.data_wali.length > 0 ? user.data_wali[0].nama_wali : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'nama_wali', e.target.value)}
+                            value={user.data_wali?.nama_wali} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
@@ -374,21 +373,21 @@ export const Biodata = () => {
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
                           <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'alamat', e.target.value)}
-                          value={user.data_wali && user.data_wali.length > 0 ? user.data_wali[0].alamat : ''}  style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                            value={user.data_wali?.alamat} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>Jenis Pekerjaan</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'jenis_pekerjaan', e.target.value)} value={user.data_wali && user.data_wali.length > 0 ? user.data_wali[0].jenis_pekerjaan : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'jenis_pekerjaan', e.target.value)} value={user.data_wali?.jenis_pekerjaan} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                       <tr style={{ fontSize: "12px" }}>
                         <td className="p-3" style={{ width: "10%" }}>No. Handphone/WA</td>
                         <td className="p-3 " style={{ width: "2%" }}>:</td>
                         <td className="p-3">
-                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'no_handphone', e.target.value)} value={user.data_wali && user.data_wali.length > 0 ? user.data_wali[0].no_handphone : ''}style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                          <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_wali', 'no_handphone', e.target.value)} value={user.data_wali?.no_handphone} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                         </td>
                       </tr>
                     </tbody>
@@ -409,14 +408,14 @@ export const Biodata = () => {
                       <td className="p-3" style={{ width: "10%" }}>Nama Sekolah</td>
                       <td className="p-3 " style={{ width: "2%" }}>:</td>
                       <td className="p-3">
-                        <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_sekolah', 'nama_sekolah', e.target.value)} value={user.data_sekolah && user.data_sekolah.length > 0 ? user.data_sekolah[0].nama_sekolah : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                        <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_sekolah', 'nama_sekolah', e.target.value)} value={user.data_sekolah?.nama_sekolah} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                       </td>
                     </tr>
                     <tr style={{ fontSize: "12px" }}>
                       <td className="p-3" style={{ width: "10%" }}>Jenjang Sekolah </td>
                       <td className="p-3 " style={{ width: "2%" }}>:</td>
                       <td className="p-3">
-                        <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_sekolah', 'jenjang_sekolah', e.target.value)} value={user.data_sekolah && user.data_sekolah.length > 0 ? user.data_sekolah[0].jenjang_sekolah : ''} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
+                        <input type="text" disabled={!input} onChange={(e) => handleInputChange('data_sekolah', 'jenjang_sekolah', e.target.value)} value={user.data_sekolah?.jenjang_sekolah} style={{ border: "none", marginRight: "2px", height: "30px", backgroundColor: "white" }} />
                       </td>
                     </tr>
                   </tbody>
