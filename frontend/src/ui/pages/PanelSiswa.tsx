@@ -485,7 +485,7 @@ export const Pengumuman = () => {
                     <span className="bg-danger ms-1 p-1" style={{ fontWeight: 'bold', color: "white", borderRadius: "5px" }} >Tidak LULUS
                     </span>
                     <span className="ms-1">
-                      Seleksi sebagai calon peserta didik baru <span style={{ fontWeight: "bold" }}>MTS WALI SONGO,</span> Anda bisa mengikuti tahun berikutnya.
+                      Seleksi sebagai calon peserta didik baru <span style={{ fontWeight: "bold" }}>SMP ISLAM WALISONGO,</span> Anda bisa mengikuti tahun berikutnya.
                     </span>
                   </p>
                 </div>
@@ -500,7 +500,7 @@ export const Pengumuman = () => {
                     <span className="bg-success ms-1 p-1" style={{ fontWeight: 'bold', color: "white", borderRadius: "5px" }} >LULUS
                     </span>
                     <span className="ms-1">
-                      Seleksi sebagai calon peserta didik baru <span style={{ fontWeight: "bold" }}>MTS WALI SONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
+                      Seleksi sebagai calon peserta didik baru <span style={{ fontWeight: "bold" }}>SMP ISLAM WALISONGO,</span> Silahkan cetak surat pengumuman sebagai bukti lulus seleksi.
                     </span>
                   </p>
                   <hr />
