@@ -32,7 +32,7 @@ const LandingPage = () => {
 
   return (
     <LayoutPengunjung>
-      <section className="content-jumbotron" style={{ height: "500px", backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}>
+      <section className="content-jumbotron" style={{ height: "500px",backgroundColor: "#004b49", color: "white" }}>
         <div className="inline-content d-flex justify-content-center align-items-center">
           <div className="content text-white">
             <div className="header-logo d-flex justify-content-center" style={{ marginTop: "50px", marginBottom: "50px" }}>
