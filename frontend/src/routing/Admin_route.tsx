@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import {Dashboard, KelolaPengumuman, KelolaUjian, Kelulusan, Verifikasi} from "../ui/pages/PanelAdmin"
+import { Dashboard, KelolaPengumuman, KelolaUjian, Kelulusan, Verifikasi } from "../ui/pages/PanelAdmin"
 
 const Admin_route = () => {
   return (

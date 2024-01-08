@@ -1,5 +1,6 @@
 import { IsOptional } from "@nestjs/class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { Status } from "./nilai.entity";
 
 export class CreateNilaiDTO {
 
@@ -55,7 +56,7 @@ export class QueryNilaiDto {
         required: false
     })
     @IsOptional()
-    status_seleksi?: string
+    status_seleksi?: Status
 
     @ApiProperty({
         description: 'find By kode pendaftaran',

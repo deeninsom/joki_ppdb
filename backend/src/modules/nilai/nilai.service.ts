@@ -23,7 +23,7 @@ export class NilaiService {
     }
 
     if (status_seleksi) {
-      queryBuilder = queryBuilder.where('nilai.status LIKE :status', { status: `${status_seleksi}` });
+      queryBuilder = queryBuilder.where('nilai.status LIKE :statusSeleksi', { statusSeleksi: status_seleksi });
     }
 
     if (status_verifikasi) {
@@ -31,7 +31,7 @@ export class NilaiService {
     }
 
     if (date) {
-      queryBuilder = queryBuilder.where('nilai.created_at LIKE :date', { date: `%${date}%` });
+      queryBuilder = queryBuilder.andWhere('nilai.created_at LIKE :date', { date: `%${date}%` });
     }
 
     if (kode_pendaftaran) {
@@ -117,6 +117,8 @@ export class NilaiService {
       month: "long",
       year: "numeric",
     });
+
+    const currentYear = new Date().getFullYear();
     const htmlContent =
       `<!DOCTYPE html>
         <html lang="en">
@@ -196,7 +198,7 @@ export class NilaiService {
                 style="font-weight: bold; font-family: serif; font-size: 23px; text-decoration: underline; margin-top: 2%;">
                 SURAT KETERANGAN LULUS
               </div>
-              <p class="text-center" style="font-family: serif; font-size: 20px; margin-top: -7px;">Nomor: 0421/SKL-MU/V/2023
+              <p class="text-center" style="font-family: serif; font-size: 20px; margin-top: -7px;">Nomor: 0421/SKL-MU/V/${currentYear}
               </p>
             </div>
             <div class="body-content">

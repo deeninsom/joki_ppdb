@@ -6,12 +6,19 @@ import 'quill/dist/quill.snow.css';
 import DatePickers from "../../utils/DatePickers"
 import axiosInstance from "../../service/_api";
 import parse from 'html-react-parser';
+import { FormateDateLocal } from "../../utils/FormatDateLocal";
 
 export const Dashboard = () => {
   const [viewSiswa, setViewSiswa]: any = useState(0)
   const [lolosSeleksi, setlolosSeleksi]: any = useState(0)
   const [tidakLolosSeleksi, setTidakLolosSeleksi]: any = useState(0)
   const [website, setWebsite]: any = useState({})
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [listSiswa, setListSiswa]: any = useState([])
+  const [searchValue, setSearchValue] = useState("");
+  const [limit, setLimit] = useState(5)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
     axiosInstance.get(`/websites/1`)
@@ -36,35 +43,55 @@ export const Dashboard = () => {
   }
 
   useEffect(() => {
-    axiosInstance.get(`/siswa?page=${1}&limit=${10}`)
+    axiosInstance.get(`/siswa?filterDate=${selectedYear}&page=${1}&limit=${10}`)
       .then((response) => {
         setViewSiswa(response.data.data.length)
       })
       .catch((error: any) => {
         alert(error)
       })
-  }, [])
+  }, [selectedYear])
 
   useEffect(() => {
-    axiosInstance.get(`/nilai?status_seleksi=lolos&page=${1}&limit=${10}`)
+    axiosInstance.get(`/nilai?filterDate=${selectedYear.toString()}&status_seleksi=lolos&page=${1}&limit=${1000}`)
       .then((response) => {
         setlolosSeleksi(response.data.totalData)
       })
       .catch((error: any) => {
         alert(error)
       })
-  }, [])
+  }, [selectedYear])
 
   useEffect(() => {
-    axiosInstance.get(`/nilai?status_seleksi=tidak lolos&page=${1}&limit=${10}`)
+    axiosInstance.get(`/nilai?filterDate=${selectedYear.toString()}&status_seleksi=tidak lolos&page=${1}&limit=${10000}`)
       .then((response) => {
         setTidakLolosSeleksi(response.data.totalData)
       })
       .catch((error: any) => {
         alert(error)
       })
-  }, [])
+  }, [selectedYear])
 
+  useEffect(() => {
+    axiosInstance.get(`/siswa?kode_pendaftaran=${searchValue.slice(1)}&filterDate=${selectedYear}&page=${1}&limit=${10}`)
+      .then((response) => {
+        setListSiswa(response.data.data)
+        setLimit(response.data.limits)
+        setPage(response.data.pages)
+        setTotalPages(response.data.totalPages)
+      })
+      .catch((error: any) => {
+        alert(error)
+      })
+  }, [selectedYear, searchValue])
+
+  const handleNextPage = () => {
+    setPage(page + 1)
+  }
+
+  const handlePrevPage = () => {
+    setPage(page - 1)
+  }
 
 
   return (
@@ -78,22 +105,8 @@ export const Dashboard = () => {
             <span>Selamat Datang, SMP ISLAM WALISONGO</span>
           </div>
         </div>
-        <div className="list-card d-flex mt-4 gap-4" style={{ width: "104%" }}>
-          <div className="col-sm-4 p-2 " style={{ backgroundColor: "#9ADE7B", color: "white" }}>
-            <span className="" style={{ fontSize: "40px" }}>{viewSiswa}</span>
-            <span style={{ fontSize: "14px", fontWeight: "bold", display: "block" }}>JUMLAH PENDAFTAR</span>
-          </div>
-          <div className="col-sm-4 p-2 " style={{ backgroundColor: "#29ADB2", color: "white" }}>
-            <span className="" style={{ fontSize: "40px" }}>{lolosSeleksi}</span>
-            <span style={{ fontSize: "14px", fontWeight: "bold", display: "block" }}>TOTAL LULUS PPDB</span>
-          </div>
-          <div className="col-sm-4 p-2 " style={{ backgroundColor: "#29ADB2", color: "white" }}>
-            <span className="" style={{ fontSize: "40px" }}>{tidakLolosSeleksi}</span>
-            <span style={{ fontSize: "14px", fontWeight: "bold", display: "block" }}>TOTAL TIDAK LULUS PPDB</span>
-          </div>
-        </div>
         <div className="close-pendaftaran" style={{ width: "110%" }}>
-          <div className="card p-3 mt-5" style={{ backgroundColor: "#D2E3C8" }}>
+          <div className="card p-3 mt-2" style={{ backgroundColor: "#D2E3C8" }}>
             <div className="content d-flex align-items-center gap-3">
               {
                 website.status_pendaftaran == 0 ?
@@ -110,6 +123,136 @@ export const Dashboard = () => {
                     </>
                   )
               }
+            </div>
+          </div>
+        </div>
+        <label htmlFor="" style={{ color: "GrayText", display: "block", fontSize: "12px", marginTop: "20px" }}>* Filter berdasarkan tahun ajaran</label>
+        <select name="" id="" style={{ fontSize: "10px", padding: "3px" }} value={selectedYear}
+          onChange={(e) => setSelectedYear(parseInt(e.target.value))}>
+          <option selected disabled>Pilih Tahun</option>
+          <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
+          <option value={new Date().getFullYear()} selected>{new Date().getFullYear()}</option>
+        </select>
+        <div className="list-card d-flex mt-4 gap-4" style={{ width: "104%" }}>
+          <div className="col-sm-4 p-2 " style={{ backgroundColor: "#9ADE7B", color: "white" }}>
+            <span className="" style={{ fontSize: "40px" }}>{viewSiswa}</span>
+            <span style={{ fontSize: "14px", fontWeight: "bold", display: "block" }}>JUMLAH PENDAFTAR</span>
+          </div>
+          <div className="col-sm-4 p-2 " style={{ backgroundColor: "#29ADB2", color: "white" }}>
+            <span className="" style={{ fontSize: "40px" }}>{lolosSeleksi}</span>
+            <span style={{ fontSize: "14px", fontWeight: "bold", display: "block" }}>TOTAL LULUS PPDB</span>
+          </div>
+          <div className="col-sm-4 p-2 " style={{ backgroundColor: "#29ADB2", color: "white" }}>
+            <span className="" style={{ fontSize: "40px" }}>{tidakLolosSeleksi}</span>
+            <span style={{ fontSize: "14px", fontWeight: "bold", display: "block" }}>TOTAL TIDAK LULUS PPDB</span>
+          </div>
+        </div>
+        <section>
+          <div className="card" style={{ width: "110%", marginTop: "10px" }}>
+            <div className="text-header p-3">
+              <span style={{ fontWeight: "bold" }}>DATA SISWA</span>
+            </div>
+            <div className="searching" >
+              <hr style={{ marginTop: "-1px" }} />
+              <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
+              <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Masukan nomor pendaftaran" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+            </div>
+            <div className="card-body">
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th style={{ fontWeight: "bold", fontSize: "11px", width: "4%" }}>No</th>
+                    <th style={{ fontWeight: "bold", fontSize: "11px", width: "10%" }}>No. Pendaftaran</th>
+                    <th style={{ fontWeight: "bold", fontSize: "11px", width: "15%" }}>Nama</th>
+                    <th style={{ fontWeight: "bold", fontSize: "11px", width: "12%" }}>NISN</th>
+                    <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Tgl. Daftar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    listSiswa.map((val: any, index: any) => (
+                      <tr key={index}>
+                        <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>{index + 1}</td>
+                        <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.kode_pendaftaran}</td>
+                        <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.nama_lengkap}</td>
+                        <td style={{ fontWeight: "normal", fontSize: "11px" }}>{val.nisn}</td>
+                        <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>{FormateDateLocal(val.created_at)}</td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div className="setlimit ms-3 d-flex align-items-center gap-2 mb-3">
+                <label htmlFor="limit" style={{ fontSize: "10px" }}>Limit</label>
+                <select value={limit} onChange={(e) => setLimit(Number(e.target.value))} name="" id="" style={{ fontSize: "10px", padding: "3px" }}>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div>
+              <nav aria-label="Page navigation example" style={{ marginRight: "15px" }} >
+                <ul className="pagination" >
+                  <li className="page-item" onClick={handlePrevPage}>
+                    <button disabled={page == 1} className="page-link" style={{ fontSize: '10px', cursor: page == 1 ? "" : "pointer" }} aria-label="Previous">
+                      <span aria-hidden="true" >&laquo;</span>
+                    </button>
+                  </li>
+                  <li className="page-item" ><div className="page-link" style={{ fontSize: '10px', cursor: "pointer" }} >{page}</div></li>
+                  <li className="page-item" onClick={handleNextPage}>
+                    <button disabled={page >= totalPages} className="page-link" style={{ fontSize: '10px', cursor: page >= totalPages ? "" : "pointer" }} aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </section>
+        <div className="modal" tabIndex={-1} id="viewdetailnilai">
+          <div className="modal-dialog modal-lg modal-dialog-scrollable">
+            <div className="modal-content">
+              <div className="modal-header">
+                Lihat Data
+              </div>
+              <div className="modal-body">
+                <ul style={{ listStyle: "none" }}>
+                  <li className="d-flex my-2">
+                    <div style={{ width: "40%" }}>No. Pendaftaran</div>
+                    <div>:</div>
+                    {/* <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.siswa_id?.kode_pendaftaran}</div> */}
+                  </li>
+                  <li className="d-flex my-2">
+                    <div style={{ width: "40%" }}>Nama Lengkap</div>
+                    <div>:</div>
+                    {/* <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.siswa_id?.nama_lengkap}</div> */}
+                  </li>
+                  <li className="d-flex my-2">
+                    <div style={{ width: "40%" }}>NISN</div>
+                    <div>:</div>
+                    {/* <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.siswa_id?.nisn}</div> */}
+                  </li>
+                  <li className="d-flex my-2">
+                    <div style={{ width: "40%" }}>Nilai Rapot</div>
+                    <div>:</div>
+                    {/* <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.nilai_rapot}</div> */}
+                  </li>
+                  <li className="d-flex my-2">
+                    <div style={{ width: "40%" }}>Nilai Ujian</div>
+                    <div>:</div>
+                    {/* <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.nilai_ujian}</div> */}
+                  </li>
+                  <li className="d-flex my-2">
+                    <div style={{ width: "40%" }}>Status</div>
+                    <div>:</div>
+                    {/* <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.status == 0 ? 'Tidak Lolos' : 'Lolos'}</div> */}
+                  </li>
+                </ul>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+              </div>
             </div>
           </div>
         </div>
@@ -195,7 +338,7 @@ export const Verifikasi = () => {
           <div className="searching" >
             <hr style={{ marginTop: "-1px" }} />
             <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
-            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Cari kode pendaftaran" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} name="search" />
+            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Masukan nomor pendaftaran" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} name="search" />
           </div>
           <div className="card-body">
             <table className="table table-bordered">
@@ -640,7 +783,7 @@ export const Kelulusan = () => {
           <div className="searching" >
             <hr style={{ marginTop: "-1px" }} />
             <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
-            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Type to filter" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Masukan nomor pendaftaran" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
           </div>
           <div className="card-body">
             <table className="table table-bordered">
@@ -1016,7 +1159,7 @@ export const KelolaUjian = () => {
           <div className="header-2 d-flex justify-content-between">
             <div className="searching" >
               <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
-              <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Cari kode pendaftaran" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} name="search" />
+              <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Masukan nomor pendaftaran" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} name="search" />
             </div>
             <div className="button-action d-flex">
               <button className="btn btn-success me-2 d-flex align-items-center" style={{ fontSize: "10px" }} onClick={handleExportExcel}>
@@ -1261,5 +1404,6 @@ export const KelolaUjian = () => {
     </LayoutAdmin>
   )
 }
+
 
 
