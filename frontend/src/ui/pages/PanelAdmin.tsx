@@ -94,6 +94,7 @@ export const Dashboard = () => {
   }
 
 
+
   return (
     <LayoutAdmin>
       <section>
@@ -772,6 +773,27 @@ export const Kelulusan = () => {
     setPage(page - 1)
   }
 
+  const generatePdf = async () => {
+    const pdfResponse = await axiosInstance.get(`/nilai/generate-pdf-kelulusan`, {
+      responseType: 'blob', // Specify the response type as 'blob' to handle binary data
+    });
+
+    const blob = new Blob([pdfResponse.data], { type: 'application/pdf' });
+
+    // Create a URL for the Blob
+    const url = window.URL.createObjectURL(blob);
+
+    // Create an anchor element to trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'HASIL SELEKSI.pdf';
+
+    // Append the anchor to the document and trigger a click event
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+  }
 
   return (
     <LayoutAdmin>
@@ -780,10 +802,15 @@ export const Kelulusan = () => {
           <div className="text-header p-3">
             <span style={{ fontWeight: "bold" }}>HASIL LOLOS SELEKSI</span>
           </div>
-          <div className="searching" >
-            <hr style={{ marginTop: "-1px" }} />
-            <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
-            <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Masukan nomor pendaftaran" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+          <hr style={{ marginTop: "-1px" }} />
+          <div className="header-nav d-flex align-items-center justify-content-between">
+            <div className="searching" >
+              <label htmlFor="" className="me-2 ms-3" style={{ fontSize: "12px" }}>Filter :</label>
+              <input type="text" style={{ padding: "4px", fontSize: "12px", height: "25px" }} placeholder="Masukan nomor pendaftaran" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+            </div>
+            <div className="button-export d-flex gap-2 me-3" style={{ fontSize: "11px", color: "white" }}>
+              <button onClick={generatePdf} className="d-flex align-items-center gap-1 bg-success" style={{ color: "white" }}><i className="fa fa-solid fa-file-pdf"></i>export</button>
+            </div>
           </div>
           <div className="card-body">
             <table className="table table-bordered">
@@ -880,9 +907,14 @@ export const Kelulusan = () => {
                   <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.nilai_ujian}</div>
                 </li>
                 <li className="d-flex my-2">
+                  <div style={{ width: "40%" }}>Nilai Keseluruhan</div>
+                  <div>:</div>
+                  <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.total}</div>
+                </li>
+                <li className="d-flex my-2">
                   <div style={{ width: "40%" }}>Status</div>
                   <div>:</div>
-                  <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.status == 0 ? 'Tidak Lolos' : 'Lolos'}</div>
+                  <div className="ms-2" style={{ fontWeight: "bold" }}>{viewDetailNilai.status === 'tidak lolos' ? 'Tidak Lolos' : 'Lolos'}</div>
                 </li>
               </ul>
             </div>

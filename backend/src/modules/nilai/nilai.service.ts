@@ -47,6 +47,7 @@ export class NilaiService {
       .skip((pages - 1) * limits)
       .take(limits)
       .orderBy('nilai.created_at', 'ASC')
+      .orderBy('nilai.total', 'DESC')
       .getManyAndCount();
 
     const totalPages = Math.ceil(totalData / limits);
@@ -279,6 +280,168 @@ export class NilaiService {
 
     return pdfBuffer;
   }
+
+  async generatePdfKelulusan() {
+
+    const findNilai: any = await this.nilaiRepository.find({
+      where: {
+        status: "lolos"
+      },
+      order: { 'total': 'DESC' },
+      relations: ["siswa_id"]
+    })
+
+    const nilaiRows = findNilai.map((nilai, index) => `
+    <tr>
+        <td style="text-align: center;">${index + 1}</td>
+        <td>${nilai.siswa_id.kode_pendaftaran}</td>
+        <td>${nilai.siswa_id.nama_lengkap}</td>
+        <td>${nilai.siswa_id.nisn}</td>
+        <td style="text-align: center;">${index + 1}</td>
+    </tr>
+`).join('');
+
+    const currentDate = new Date().toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    const currentYear = new Date().getFullYear();
+    const htmlContent =
+      `
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
+    
+            h1,
+            p {
+                margin: 0;
+            }
+    
+            .border-header {
+                border-top: 3px rgb(3, 3, 3) solid;
+                height: 10px;
+                width: 100%;
+                display: inline-block;
+            }
+    
+            .border-header-2 {
+                border-top: 5px rgb(3, 3, 3) solid;
+                height: 10px;
+                width: 100%;
+                display: inline-block;
+            }
+    
+            .ttd {
+                right: 0%;
+                position: absolute;
+                margin-top: 5%;
+                margin-right: 10%;
+            }
+    
+            .ttd p {
+                font-size: 15px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="pdf" class="a4-container" style="overflow-x: hidden;">
+            <div class="header">
+                <div class="content d-flex ms-1 gap-5 align-items-center justify-content-center mt-4"
+                    style="margin-left: -100px;">
+                    <div class="image-content" style="margin-left: -100px;">
+                        <img src="http://localhost:8080/api/v1/upload/8efc84dee39d1c2df0dac3d7656bc717.jpg" width="150"
+                            alt="" />
+                    </div>
+                    <div class="text-content"
+                        style="display: block; font-family: serif; margin-top: 20px; text-align: center;">
+                        <span style="font-size: 20px;">MADRASAH IBTIDAIYAH</span>
+                        <p style="font-size: 47px;">MISBAHUL ULUM</p>
+                        <p style="font-size: 13px; margin-top: -2%;">Desa Kamuning, Kecamatan Sampang, Kabupaten Sampang</p>
+                        <p style="font-size: 13px; margin-top: -1%;">Tlp. 085330232687 - 087750223060</p>
+                        <p style="font-size: 13px; margin-top: -1%;">Akta Notaris : AHU-0008233.AH.01.04.Tahun 2015</p>
+                    </div>
+                </div>
+                <div class="border-grup">
+                    <div class="border-header"></div>
+                </div>
+                <div class="border-grup" style="margin-top: -15px;">
+                    <div class="border-header-2"></div>
+                </div>
+                <div class="text-sku text-center"
+                    style="font-weight: bold; font-family: serif; font-size: 23px; text-decoration: underline; margin-top: 2%;">
+                    HASIL KELULUSAN CALON SISWA
+                </div>
+                <p class="text-center" style="font-family: serif; font-size: 20px; margin-top: -7px;">Nomor:
+                    0421/SKL-MU/V/${currentYear}
+                </p>
+            </div>
+            <div class="body-content">
+                <div class="text-1" style="margin-left: 11%; margin-top: 2%;">
+                    <p style="text-indent: 25px; font-size: 15px; width: 90%;">Hasil kelulusan calon siswa Madrasah Ibtidaiyah (MI) MISBAHUL ULUM:</p>
+                </div>
+                <div style="display: flex; padding: 40px; margin-top: 3%;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">No</th>
+                                <th>No. Pendaftaran</th>
+                                <th>Nama</th>
+                                <th>NISN</th>
+                                <th style="text-align: center;">Peringkat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          ${nilaiRows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="ttd">
+                <img src="http://localhost:8080/api/v1/upload/58fed6d791006cb36457c7cb8beba7edc.png"
+                    style="position: absolute; z-index: -50; right: 70%; top: -10%;" width="200" alt="" />
+                <img src="http://localhost:8080/api/v1/upload/ce4a8b88355d75343c5dfe410afb4da63.png"
+                    style="position: absolute; z-index: 50; right: 10%; top: -8%;" width="220" alt="" />
+                <p>Sampang, ${currentDate}</p>
+                <p style="margin-top: -6px;">Kepala Madrasah</p>
+                <p style="margin-top: 50%;">ABD. ROUF, S.Pd.I</p>
+                <p style="margin-top: -8px;">NIP.-</p>
+            </div>
+        </div>
+    </body>
+    
+    </html>`
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setContent(htmlContent);
+    // await page.waitForTimeout(2000);
+    const pdfBuffer = await page.pdf();
+
+    await browser.close();
+
+    return pdfBuffer;
+  }
+  
 
   async generateExcel() {
     const nilai = await this.nilaiRepository.find({

@@ -11,6 +11,12 @@ export class CreateNilaiDTO {
     nilai_ujian: number;
 
     @ApiProperty()
+    total: number;
+
+    @ApiProperty()
+    status: string;
+
+    @ApiProperty()
     siswa_id: string;
 
 }

@@ -86,10 +86,10 @@ const LayoutAdmin = ({ children }: { children: ReactNode }) => {
                           <i className="fa fa-solid fa-bell"></i>
                           <span>PENGUMUMAN</span>
                         </li>
-                        <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola/ujian")} style={{ cursor: "pointer", fontSize: "13px" }}>
+                        {/* <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/admin-panel/kelola/ujian")} style={{ cursor: "pointer", fontSize: "13px" }}>
                           <i className="fa fa-solid fa-clipboard-list" style={{ marginLeft: "1px" }}></i>
                           <span>PENILAIAN UJIAN</span>
-                        </li>
+                        </li> */}
                         {/* <li className="my-3 d-flex align-items-center gap-3" onClick={() => handlePage("/")} style={{ cursor: "pointer", fontSize: "13px" }}>
                       <i className="fa fa-solid fa-user"></i>
                         <span>PROFILE</span>

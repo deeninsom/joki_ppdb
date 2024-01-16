@@ -10,6 +10,7 @@ export class UploadController {
     @Get(':filename')
     serveFile(@Param('filename') filename: string, @Res() res: Response) {
         const filePath = join(__dirname, '../../../uploads', filename);
+        console.log(filePath)
         return res.sendFile(filePath);
     }
 

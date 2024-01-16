@@ -5,6 +5,7 @@ import logo from "../../assets/SMP-removebg-preview.jpg"
 import { useEffect, useState } from "react"
 import axiosInstance from "../../service/_api"
 import moment from "moment"
+import { qIndonesia, qIpa, qPai, qmtk } from "../../data/question"
 
 const formatDate = (val: any) => {
   const parsedDate = moment(val);
@@ -104,7 +105,7 @@ export const Biodata = () => {
       }));
     }
   };
-  
+
 
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -518,29 +519,351 @@ export const Pengumuman = () => {
   )
 }
 
-export const PengumumanUjian = () => {
-  const [pengumumanUjian, setPengumumanUjian]: any = useState({})
-  useEffect(() => {
-    axiosInstance.get('/websites/1')
-      .then((response) => {
-        setPengumumanUjian(response.data.data)
-      })
-      .catch((error) => {
-        console.error('Error updating status:', error);
-      });
-  }, [])
+export const Ujian = () => {
+  const { id } = useParams()
+  const [isBahasaIndonesiaOpen, setIsBahasaIndonesiaOpen] = useState(false);
+  const [isBahasaIpaOpen, setIsBahasaIpaOpen] = useState(false);
+  const [isBahasaMatematikaOpen, setIsBahasaMatematikaOpen] = useState(false);
+  const [isBahasaPAIOpen, setIsBahasaPAIOpen] = useState(false);
 
+  const toggleDropdown = (subject: any) => {
+    switch (subject) {
+      case 'BahasaIndonesia':
+        setIsBahasaIndonesiaOpen(!isBahasaIndonesiaOpen);
+        break;
+      case 'Ipa':
+        setIsBahasaIpaOpen(!isBahasaIpaOpen);
+        break;
+      case 'Matematika':
+        setIsBahasaMatematikaOpen(!isBahasaMatematikaOpen);
+        break;
+      case 'Pai':
+        setIsBahasaPAIOpen(!isBahasaPAIOpen);
+        break;
+      default:
+        break;
+    }
+  };
+  const [selectedJawaban, setSelectedJawaban]: any = useState({});
+
+  const handlePilihJawaban = (nomorSoal: any, jawaban: any, kelompok: string) => {
+    const newSelectedJawaban = { ...selectedJawaban };
+    const kunci = `${kelompok}-${nomorSoal}`;
+    newSelectedJawaban[kunci] = jawaban;
+    setSelectedJawaban(newSelectedJawaban);
+  };
+
+  const handleKoreksiJawaban = () => {
+
+    let benar = 0;
+
+    qIndonesia.forEach((soal) => {
+      const kunci = `${soal.jawaban}`;
+
+      if (selectedJawaban[`BahasaIndonesia-${soal.no}`] === kunci) {
+        benar += 1;
+      }
+    });
+
+
+
+    qmtk.forEach((soal) => {
+      const kunci = `${soal.jawaban}`;
+
+      if (selectedJawaban[`Matematika-${soal.no}`] === kunci) {
+        benar += 1;
+      }
+    });
+
+
+
+    qIpa.forEach((soal) => {
+      const kunci = `${soal.jawaban}`;
+
+      if (selectedJawaban[`Ipa-${soal.no}`] === kunci) {
+        benar += 1;
+      }
+    });
+
+
+    qPai.forEach((soal) => {
+      const kunci = `${soal.jawaban}`;
+
+      if (selectedJawaban[`Pai-${soal.no}`] === kunci) {
+        benar += 1;
+      }
+    });
+
+    return benar
+  };
+
+  const handleSubmit = async () => {
+
+    const result: any = handleKoreksiJawaban();
+    const nilaiUjian = parseInt(result) * 10
+    try {
+      const response = await axiosInstance.get(`/siswa?user_id=${id}&&page=1&&limit=1`);
+      const hasilNilai = (parseInt(response.data.data[0].nilai_rapot) + nilaiUjian) / 2
+      response.data.data.forEach((val: any) => {
+        let kelulusan = ""
+        if (hasilNilai <= 75) {
+          kelulusan = 'tidak lolos'
+        } else {
+          kelulusan = 'lolos'
+        }
+        axiosInstance.post(`/nilai`, {
+          nilai_rapot: val.nilai_rapot,
+          nilai_ujian: nilaiUjian,
+          total: hasilNilai,
+          status: kelulusan,
+          siswa_id: val.id
+        })
+          .then(() => {
+            alert('Anda telah menyelesaikan ujian')
+          })
+          .catch((error) => {
+            alert(error.response.data.message);
+          });
+      });
+    } catch (error: any) {
+      alert(error.response.data.message);
+    }
+  };
 
   return (
     <LayoutSiswa>
       <section>
         <div className="card">
           <div className="card-header" style={{ backgroundColor: "GrayText" }}>
-            <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>INFO UJIAN</span>
+            <span style={{ fontWeight: "bold", color: "yellow" }}><i className="fa-regular fa-paper-plane me-2"></i>SOAL UJIAN</span>
           </div>
-          <div className="card-body p-4">
-            <span>{pengumumanUjian.pengumuman_ujian}</span>
+          <div className="card-body p-2">
+            <div className="card p-2">
+              <div className="card-body border my-1" style={{ borderRadius: "10px", cursor: "pointer" }}>
+                <div
+                  onClick={() => toggleDropdown('BahasaIndonesia')}
+                  className="group-card d-flex justify-content-between " style={{ borderRadius: "10px", alignItems: "center", height: "5px" }}>
+                  <p className="mt-3">Soal Bahasa Indonesia</p>
+                  <i className="fa fa-solid fa-circle-chevron-down"></i>
+                </div>
+                {isBahasaIndonesiaOpen && qIndonesia.map((value, index) => (
+                  <ul key={index} style={{ marginTop: "30px", fontSize: "10px", listStyle: "none", marginLeft: "-30px" }}>
+                    <li>{value.no}. {value.soal}</li>
+                    <li className="ms-3">
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'A', 'BahasaIndonesia')}
+                          checked={selectedJawaban[`BahasaIndonesia-${value.no}`] === 'A'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].A}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'B', 'BahasaIndonesia')}
+                          checked={selectedJawaban[`BahasaIndonesia-${value.no}`] === 'B'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].B}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'C', 'BahasaIndonesia')}
+                          checked={selectedJawaban[`BahasaIndonesia-${value.no}`] === 'C'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].C}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'D', 'BahasaIndonesia')}
+                          checked={selectedJawaban[`BahasaIndonesia-${value.no}`] === 'D'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].D}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                ))}
+              </div>
+              <div className="card-body border my-1" style={{ borderRadius: "10px", cursor: "pointer" }}>
+                <div
+                  onClick={() => toggleDropdown('Ipa')}
+                  className="group-card d-flex justify-content-between " style={{ borderRadius: "10px", alignItems: "center", height: "5px" }}>
+                  <p className="mt-3">Soal Ipa</p>
+                  <i className="fa fa-solid fa-circle-chevron-down"></i>
+                </div>
+                {isBahasaIpaOpen && qIpa.map((value, index) => (
+                  <ul key={index} style={{ marginTop: "30px", fontSize: "10px", listStyle: "none", marginLeft: "-30px" }}>
+                    <li>{value.no}. {value.soal}</li>
+                    <li className="ms-3">
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'A', 'Ipa')}
+                          checked={selectedJawaban[`Ipa-${value.no}`] === 'A'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].A}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'B', 'Ipa')}
+                          checked={selectedJawaban[`Ipa-${value.no}`] === 'B'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].B}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'C', 'Ipa')}
+                          checked={selectedJawaban[`Ipa-${value.no}`] === 'C'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].C}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'D', 'Ipa')}
+                          checked={selectedJawaban[`Ipa-${value.no}`] === 'D'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].D}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                ))}
+              </div>
+              <div className="card-body border my-1" style={{ borderRadius: "10px", cursor: "pointer" }}>
+                <div
+                  onClick={() => toggleDropdown('Matematika')}
+                  className="group-card d-flex justify-content-between " style={{ borderRadius: "10px", alignItems: "center", height: "5px" }}>
+                  <p className="mt-3">Soal Matematika</p>
+                  <i className="fa fa-solid fa-circle-chevron-down"></i>
+                </div>
+                {isBahasaMatematikaOpen && qmtk.map((value, index) => (
+                  <ul key={index} style={{ marginTop: "30px", fontSize: "10px", listStyle: "none", marginLeft: "-30px" }}>
+                    <li>{value.no}. {value.soal}</li>
+                    <li className="ms-3">
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'A', 'Matematika')}
+                          checked={selectedJawaban[`Matematika-${value.no}`] === 'A'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].A}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'B', 'Matematika')}
+                          checked={selectedJawaban[`Matematika-${value.no}`] === 'B'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].B}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'C', 'Matematika')}
+                          checked={selectedJawaban[`Matematika-${value.no}`] === 'C'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].C}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'D', 'Matematika')}
+                          checked={selectedJawaban[`Matematika-${value.no}`] === 'D'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].D}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                ))}
+              </div>
+              <div className="card-body border my-1" style={{ borderRadius: "10px", cursor: "pointer" }}>
+                <div
+                  onClick={() => toggleDropdown('Pai')}
+                  className="group-card d-flex justify-content-between " style={{ borderRadius: "10px", alignItems: "center", height: "5px" }}>
+                  <p className="mt-3">Soal PAI</p>
+                  <i className="fa fa-solid fa-circle-chevron-down"></i>
+                </div>
+                {isBahasaPAIOpen && qPai.map((value, index) => (
+                  <ul key={index} style={{ marginTop: "30px", fontSize: "10px", listStyle: "none", marginLeft: "-30px" }}>
+                    <li>{value.no}. {value.soal}</li>
+                    <li className="ms-3">
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'A', 'Pai')}
+                          checked={selectedJawaban[`Pai-${value.no}`] === 'A'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].A}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'B', 'Pai')}
+                          checked={selectedJawaban[`Pai-${value.no}`] === 'B'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].B}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'C', 'Pai')}
+                          checked={selectedJawaban[`Pai-${value.no}`] === 'C'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].C}
+                        </label>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          type="radio"
+                          onChange={() => handlePilihJawaban(value.no, 'D', 'Pai')}
+                          checked={selectedJawaban[`Pai-${value.no}`] === 'D'}
+                        />
+                        <label>
+                          {value.pilihanGanda[0].D}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                ))}
+              </div>
+            </div>
           </div>
+        </div>
+        <div className="button-submit d-flex justify-content-end">
+          <button className="btn btn-primary my-3" style={{ fontSize: "10px" }} onClick={handleSubmit}>Submit</button>
         </div>
       </section>
     </LayoutSiswa>

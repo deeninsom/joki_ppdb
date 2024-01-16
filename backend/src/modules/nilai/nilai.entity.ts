@@ -26,8 +26,11 @@ export default class Nilai {
   @Column({ type: 'float', nullable: true })
   nilai_ujian: number;
 
-  @Column({default: Status.menunggu })
-  status: Status;
+  @Column({ type: 'float', nullable: true })
+  total: number;
+
+  @Column({nullable: true})
+  status: string;
 
   @ManyToOne(() => Siswa, (siswa) => siswa.id)
   @JoinColumn({ name: 'siswa_id' })
