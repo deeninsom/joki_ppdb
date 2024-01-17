@@ -821,6 +821,7 @@ export const Kelulusan = () => {
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "15%" }}>Nama</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", width: "12%" }}>NISN</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Status</th>
+                  <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "5%" }}>Peringkat</th>
                   <th style={{ fontWeight: "bold", fontSize: "11px", textAlign: "center", width: "15%" }}>Aksi</th>
                 </tr>
               </thead>
@@ -835,6 +836,7 @@ export const Kelulusan = () => {
                       <td style={{ fontWeight: "normal", fontSize: "11px", textAlign: "center" }}>
                         <span className="d-flex justify-content-center" style={{ backgroundColor: "green", color: "white", padding: "7px", fontSize: "10px", borderRadius: "8px", fontWeight: "bold" }}>{val.status}</span>
                       </td>
+                      <td style={{ fontWeight: "normal", fontSize: "11px" }}>{index + 1}</td>
                       <td style={{ fontWeight: "normal" }} className="d-flex gap-3 justify-content-center">
                         <button type="button" style={{ fontSize: "10px", fontWeight: "bold" }} onClick={() => handleViewDetail(val.id)} data-bs-toggle="modal" data-bs-target="#viewdetailnilai" className="btn btn-secondary">
                           <i className="fa fa-solid fa-eye"></i>
